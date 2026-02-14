@@ -1,7 +1,8 @@
 /* Auth Page Specific Styles */
 
 .auth-page {
-    background: #F8F9FA;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
 }
 
 /* Navbar Override for Auth Page */
@@ -33,31 +34,7 @@
     justify-content: center;
     padding: 80px 20px 20px;
     overflow: hidden;
-}
-
-.auth-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
-.auth-bg-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: blur(8px);
-}
-
-.auth-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.35);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 /* Auth Card */
