@@ -33,44 +33,16 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            
-            // Trigger counter animation for statistics
-            if (entry.target.classList.contains('stat-item')) {
-                animateCounter(entry.target);
-            }
         }
     });
 }, observerOptions);
 
 // Add fade-in class to sections and observe them
-const animateElements = document.querySelectorAll('.feature-card, .destination-card, .section-title, .stat-item, .carousel-3d-card, .promo-card, .carousel-3d-rotating-wrapper');
+const animateElements = document.querySelectorAll('.feature-card, .destination-card, .section-title, .carousel-3d-card, .carousel-ring-card, .promo-card, .carousel-3d-rotating-wrapper');
 animateElements.forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
 });
-
-// Animated Counter for Statistics
-function animateCounter(statItem) {
-    const numberElement = statItem.querySelector('.stat-number');
-    if (numberElement && !numberElement.classList.contains('counted')) {
-        numberElement.classList.add('counted');
-        const target = parseInt(numberElement.getAttribute('data-target'));
-        const duration = 2000; // 2 seconds
-        const steps = 60;
-        const increment = target / steps;
-        let current = 0;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                numberElement.textContent = target.toLocaleString();
-                clearInterval(timer);
-            } else {
-                numberElement.textContent = Math.floor(current).toLocaleString();
-            }
-        }, duration / steps);
-    }
-}
 
 // Search Functionality (Basic implementation)
 const searchBtn = document.querySelector('.search-btn');
@@ -171,6 +143,117 @@ carousel3dItems.forEach(item => {
     });
 });
 
+// 3D circular carousel interactions
+const carouselRing = document.querySelector('.carousel-ring');
+if (carouselRing) {
+    const ringCards = Array.from(carouselRing.querySelectorAll('.carousel-ring-card'));
+    let baseRotation = 0;
+    let lastTime = performance.now();
+    let isInteracting = false;
+    let resumeTimeout = null;
+    let pointerActive = false;
+    let startX = 0;
+    let startRotation = 0;
+    let radius = 300;
+    const autoSpeed = 6; // degrees per second
+
+    const updateRadius = () => {
+        const containerWidth = carouselRing.clientWidth;
+        radius = Math.max(240, Math.min(360, containerWidth * 0.38));
+    };
+
+    const positionCards = () => {
+        const step = 360 / ringCards.length;
+        ringCards.forEach((card, index) => {
+            const angle = baseRotation + index * step;
+            const angleRad = (angle * Math.PI) / 180;
+            const depth = Math.cos(angleRad);
+            const scale = 0.9 + Math.max(0, depth) * 0.12;
+            const opacity = 0.4 + Math.max(0, depth) * 0.6;
+            card.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${radius}px) scale(${scale})`;
+            card.style.opacity = opacity.toFixed(2);
+            card.style.filter = depth > 0 ? 'saturate(1)' : 'saturate(0.85)';
+            card.style.zIndex = Math.round((depth + 1) * 50);
+            card.classList.toggle('is-front', depth > 0.92);
+        });
+    };
+
+    const scheduleResume = () => {
+        if (resumeTimeout) {
+            clearTimeout(resumeTimeout);
+        }
+        resumeTimeout = setTimeout(() => {
+            isInteracting = false;
+        }, 2500);
+    };
+
+    const onPointerDown = (event) => {
+        pointerActive = true;
+        isInteracting = true;
+        if (resumeTimeout) {
+            clearTimeout(resumeTimeout);
+        }
+        startX = event.clientX;
+        startRotation = baseRotation;
+        carouselRing.classList.add('is-dragging');
+        carouselRing.setPointerCapture(event.pointerId);
+    };
+
+    const onPointerMove = (event) => {
+        if (!pointerActive) {
+            return;
+        }
+        const deltaX = event.clientX - startX;
+        baseRotation = startRotation + deltaX * 0.35;
+        positionCards();
+    };
+
+    const endPointer = (event) => {
+        if (!pointerActive) {
+            return;
+        }
+        pointerActive = false;
+        carouselRing.classList.remove('is-dragging');
+        carouselRing.releasePointerCapture(event.pointerId);
+        scheduleResume();
+    };
+
+    const onWheel = (event) => {
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+            event.preventDefault();
+            baseRotation += event.deltaX * 0.15;
+            positionCards();
+            isInteracting = true;
+            scheduleResume();
+        }
+    };
+
+    const animate = (time) => {
+        const delta = (time - lastTime) / 1000;
+        lastTime = time;
+        if (!isInteracting) {
+            baseRotation += autoSpeed * delta;
+            positionCards();
+        }
+        requestAnimationFrame(animate);
+    };
+
+    updateRadius();
+    positionCards();
+    requestAnimationFrame(animate);
+
+    carouselRing.addEventListener('pointerdown', onPointerDown);
+    carouselRing.addEventListener('pointermove', onPointerMove);
+    carouselRing.addEventListener('pointerup', endPointer);
+    carouselRing.addEventListener('pointerleave', endPointer);
+    carouselRing.addEventListener('pointercancel', endPointer);
+    carouselRing.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('resize', () => {
+        updateRadius();
+        positionCards();
+    });
+}
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     // Trigger initial animations
@@ -191,12 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const destCards = document.querySelectorAll('.destination-card');
     destCards.forEach((card, index) => {
         card.style.transitionDelay = `${index * 0.15}s`;
-    });
-    
-    // Staggered animation for stat items
-    const statItems = document.querySelectorAll('.stat-item');
-    statItems.forEach((item, index) => {
-        item.style.transitionDelay = `${index * 0.1}s`;
     });
 });
 
