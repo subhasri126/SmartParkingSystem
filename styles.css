@@ -576,6 +576,82 @@ body {
     transform: translateY(0);
 }
 
+/* 3D Circular Carousel Section */
+.carousel-ring-section {
+    padding: 80px 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.92) 100%);
+    position: relative;
+    z-index: 1;
+}
+
+.carousel-ring-wrapper {
+    perspective: 1200px;
+    perspective-origin: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 0;
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.carousel-ring-wrapper:active {
+    cursor: grabbing;
+}
+
+.carousel-ring {
+    position: relative;
+    width: min(860px, 92vw);
+    height: clamp(280px, 40vw, 360px);
+    transform-style: preserve-3d;
+    cursor: grab;
+}
+
+.carousel-ring.is-dragging {
+    cursor: grabbing;
+}
+
+.carousel-ring-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(190px, 20vw, 240px);
+    height: clamp(240px, 26vw, 300px);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, opacity 0.6s ease, filter 0.6s ease;
+}
+
+.carousel-ring-card.is-front {
+    box-shadow: var(--shadow-lg);
+}
+
+.carousel-ring-image {
+    width: 100%;
+    height: 70%;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-ring-content {
+    padding: 16px 18px 18px;
+}
+
+.carousel-ring-content h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-dark);
+}
+
+.carousel-ring-content p {
+    font-size: 14px;
+    color: var(--text-light);
+}
+
 /* Features Section */
 .features {
     padding: 120px 0;
