@@ -38,60 +38,43 @@
         </div>
     </nav>
 
-    <!-- Floating Background Elements -->
-    <div class="floating-background">
-        <div class="floating-icon plane" style="--delay: 0s; --duration: 25s; --x: 10%; --y: 15%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-            </svg>
-        </div>
-        <div class="floating-icon compass" style="--delay: 3s; --duration: 30s; --x: 85%; --y: 20%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="1.5"/>
-                <path d="M12 2v4m0 12v4M2 12h4m12 0h4M8 8l2 6 6 2-2-6-6-2z"/>
-            </svg>
-        </div>
-        <div class="floating-icon map-pin" style="--delay: 6s; --duration: 28s; --x: 15%; --y: 65%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-        </div>
-        <div class="floating-icon suitcase" style="--delay: 8s; --duration: 32s; --x: 78%; --y: 70%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 6h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM9 4h6v2H9V4z"/>
-            </svg>
-        </div>
-        <div class="floating-icon plane" style="--delay: 12s; --duration: 27s; --x: 60%; --y: 40%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-            </svg>
-        </div>
-        <div class="floating-icon compass" style="--delay: 15s; --duration: 35s; --x: 25%; --y: 85%;">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none" stroke-width="1.5"/>
-                <path d="M12 2v4m0 12v4M2 12h4m12 0h4M8 8l2 6 6 2-2-6-6-2z"/>
-            </svg>
-        </div>
-    </div>
-
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <div class="hero-slideshow">
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1920&q=80');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1920&q=80');"></div>
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1431274172761-fca41d930114?w=1920&q=80');"></div>
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&q=80');"></div>
+        </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">Explore the World Smarter</h1>
-            <p class="hero-subtitle">Find nearby tourist spots, hotels, and restaurants instantly</p>
+            <p class="hero-subtitle">Discover breathtaking destinations tailored to your dreams</p>
+            
+            <!-- Interactive Destination Categories -->
+            <div class="hero-categories">
+                <div class="hero-category" data-image="0">
+                    <span class="category-icon">⛰️</span>
+                    <span class="category-label">Mountains</span>
+                </div>
+                <div class="hero-category" data-image="1">
+                    <span class="category-icon">🏖️</span>
+                    <span class="category-label">Beaches</span>
+                </div>
+                <div class="hero-category" data-image="2">
+                    <span class="category-icon">🏙️</span>
+                    <span class="category-label">Cities</span>
+                </div>
+                <div class="hero-category" data-image="3">
+                    <span class="category-icon">🏛️</span>
+                    <span class="category-label">Heritage</span>
+                </div>
+            </div>
+            
             <div class="search-box">
                 <input type="text" class="search-input" placeholder="Search destinations, hotels, restaurants...">
                 <button class="search-btn">Search</button>
-            </div>
-        </div>
-        
-        <!-- Integrated Promo Card -->
-        <div class="promo-card-container">
-            <div class="promo-card">
-                <div class="promo-badge">🎉 Limited Time Offer</div>
-                <h3 class="promo-title">Get 30% Off on Your First Booking!</h3>
-                <p class="promo-text">Use code: <span class="promo-code">VOYAGO30</span> at checkout</p>
             </div>
         </div>
         
@@ -103,25 +86,92 @@
         </div>
     </section>
 
-    <!-- Statistics Section -->
-    <section class="statistics">
+    <!-- 3D Circular Scrolling Carousel Section -->
+    <section class="circular-carousel-section">
         <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-target="15000">0</div>
-                    <div class="stat-label">Happy Travelers</div>
+            <h2 class="section-title">Featured Destinations</h2>
+            <p class="section-subtitle">Explore our handpicked travel experiences</p>
+            
+            <div class="circular-carousel-container">
+                <div class="circular-carousel-scene">
+                    <div class="circular-carousel" id="circularCarousel">
+                        <div class="carousel-card" data-index="0">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Paris, France</h3>
+                                    <p>Experience the city of lights and romance</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="1">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Santorini, Greece</h3>
+                                    <p>Stunning sunsets and white-washed beauty</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="2">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Maldives</h3>
+                                    <p>Paradise beaches and crystal clear waters</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="3">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Swiss Alps</h3>
+                                    <p>Majestic mountains and pristine landscapes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="4">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Bali, Indonesia</h3>
+                                    <p>Tropical paradise and cultural wonders</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="5">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Iceland</h3>
+                                    <p>Northern lights and volcanic landscapes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="6">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Dubai, UAE</h3>
+                                    <p>Modern luxury meets desert adventure</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-card" data-index="7">
+                            <div class="carousel-card-inner">
+                                <div class="carousel-card-img" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600');"></div>
+                                <div class="carousel-card-content">
+                                    <h3>Kyoto, Japan</h3>
+                                    <p>Ancient temples and cherry blossoms</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="850">0</div>
-                    <div class="stat-label">Destinations</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="2500">0</div>
-                    <div class="stat-label">Hotels & Resorts</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="98">0</div>
-                    <div class="stat-label">Satisfaction Rate</div>
+                <div class="carousel-controls">
+                    <button class="carousel-nav prev" id="carouselPrev">‹</button>
+                    <button class="carousel-nav next" id="carouselNext">›</button>
                 </div>
             </div>
         </div>
@@ -168,90 +218,6 @@
         </div>
     </section>
 
-    <!-- 3D Perspective Carousel Section -->
-    <section class="carousel-3d-section">
-        <div class="container">
-            <h2 class="section-title">Trending Travel Experiences</h2>
-            <div class="carousel-3d-wrapper">
-                <div class="carousel-3d-track">
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Beach Paradise</h4>
-                                <p>Relax on pristine shores</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Mountain Trekking</h4>
-                                <p>Adventure awaits at peaks</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1514565131-fce0801e5785?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>City Exploration</h4>
-                                <p>Discover urban wonders</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Desert Safari</h4>
-                                <p>Experience golden dunes</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Tropical Islands</h4>
-                                <p>Paradise destinations</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Wildlife Safari</h4>
-                                <p>Nature's best kept secrets</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Duplicate for seamless loop -->
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Beach Paradise</h4>
-                                <p>Relax on pristine shores</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-3d-card">
-                        <div class="card-3d-inner">
-                            <div class="card-3d-image" style="background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600');"></div>
-                            <div class="card-3d-content">
-                                <h4>Mountain Trekking</h4>
-                                <p>Adventure awaits at peaks</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Popular Destinations Section -->
     <section class="destinations">
         <div class="container">
@@ -285,7 +251,7 @@
                     </div>
                 </div>
                 <div class="destination-card">
-                    <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800');">
+                    <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800');">
                         <div class="destination-overlay"></div>
                     </div>
                     <div class="destination-content">
@@ -297,48 +263,38 @@
         </div>
     </section>
 
-    <!-- 3D Rotating Carousel Section -->
-    <section class="carousel-3d-rotating-section">
-        <div class="container">
-            <h2 class="section-title">Travel Memories</h2>
-            <p class="section-subtitle">Moments captured around the world</p>
-            <div class="carousel-3d-rotating-wrapper">
-                <div class="carousel-3d-rotating">
-                    <div class="carousel-3d-item" style="--i:0">
-                        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:1">
-                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:2">
-                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:3">
-                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:4">
-                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:5">
-                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:6">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="Travel">
-                    </div>
-                    <div class="carousel-3d-item" style="--i:7">
-                        <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=400" alt="Travel">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Call To Action Section -->
     <section class="cta" id="about">
-        <div class="cta-content">
-            <h2 class="cta-title">Ready to Start Your Journey?</h2>
-            <p class="cta-description">Join thousands of travelers discovering the world with Voyago</p>
-            <button class="cta-btn">Start Exploring</button>
+        <div class="cta-background-mesh"></div>
+        <div class="container">
+            <div class="cta-split-layout">
+                <div class="cta-content-left">
+                    <div class="cta-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800" alt="Travel Adventure" class="cta-image">
+                        <div class="cta-image-overlay"></div>
+                    </div>
+                </div>
+                <div class="cta-content-right">
+                    <span class="cta-badge">✨ Start Your Adventure</span>
+                    <h2 class="cta-title">Ready to Explore the World?</h2>
+                    <p class="cta-description">Join thousands of travelers discovering hidden gems and creating unforgettable memories</p>
+                    <ul class="cta-features-list">
+                        <li>
+                            <span class="cta-icon">🌍</span>
+                            <span>Access to 850+ destinations worldwide</span>
+                        </li>
+                        <li>
+                            <span class="cta-icon">🏨</span>
+                            <span>Curated hotels and local experiences</span>
+                        </li>
+                        <li>
+                            <span class="cta-icon">💰</span>
+                            <span>Best prices guaranteed with 30% off</span>
+                        </li>
+                    </ul>
+                    <button class="cta-btn ripple-effect">Start Exploring Now</button>
+                </div>
+            </div>
         </div>
     </section>
 
