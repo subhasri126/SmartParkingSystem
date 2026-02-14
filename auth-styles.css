@@ -4,6 +4,26 @@
     background: #F8F9FA;
 }
 
+/* Navbar Override for Auth Page */
+.auth-page .navbar {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 12px 0;
+}
+
+.auth-page .navbar .logo-text,
+.auth-page .navbar .nav-link {
+    color: var(--primary-dark);
+}
+
+.auth-page .navbar .nav-link:hover {
+    color: var(--primary);
+}
+
+.auth-page .navbar .hamburger span {
+    background: var(--text-dark);
+}
+
 /* Auth Container */
 .auth-container {
     position: relative;
