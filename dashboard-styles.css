@@ -1,0 +1,688 @@
+/* ===================================================
+   VOYAGO DASHBOARD STYLES
+   Personalized user dashboard with modern design
+=================================================== */
+
+.dashboard-hero {
+    background: linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
+    padding: 60px 20px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.dashboard-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.dashboard-content {
+    padding: 60px 0;
+    background: #f8f9fa;
+}
+
+.dashboard-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 20px;
+}
+
+.subsection-heading {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin: 30px 0 15px;
+}
+
+.btn-logout {
+    background: #ff6b6b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+    background: #ff5252;
+}
+
+/* ==================== CURRENT DESTINATION ==================== */
+.current-dest-card {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.dest-image {
+    width: 400px;
+    height: 300px;
+    border-radius: 16px;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.dest-info {
+    flex: 1;
+}
+
+.dest-name {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.dest-location,
+.dest-category {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.dest-stats {
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.stat {
+    background: linear-gradient(135deg, #4A90E2, #5BA3F5);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dest-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+/* ==================== SEARCH HISTORY ==================== */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.history-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 25px rgba(74, 144, 226, 0.15);
+}
+
+.history-image {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+
+.history-info {
+    padding: 15px;
+}
+
+.history-info h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+}
+
+.history-info p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.history-date {
+    font-size: 12px;
+    color: #999;
+}
+
+/* ==================== ITINERARY ==================== */
+.itinerary-info {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #856404;
+}
+
+.itinerary-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.itinerary-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid #4A90E2;
+    transition: transform 0.3s ease;
+}
+
+.itinerary-item:hover {
+    transform: translateX(10px);
+}
+
+.time-badge {
+    background: linear-gradient(135deg, #4A90E2, #5BA3F5);
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.itinerary-content {
+    flex: 1;
+}
+
+.itinerary-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+}
+
+.itinerary-category {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.itinerary-desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.itinerary-rating {
+    font-size: 14px;
+    color: #f39c12;
+    font-weight: 600;
+}
+
+/* ==================== HOTELS ==================== */
+.hotels-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #0c5460;
+}
+
+.hotels-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.hotel-dashboard-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hotel-dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(74, 144, 226, 0.2);
+}
+
+.hotel-dash-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.hotel-dash-info {
+    padding: 20px;
+}
+
+.hotel-dash-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+
+.hotel-dash-rating {
+    display: inline-block;
+    background: linear-gradient(135deg, #4A90E2, #5BA3F5);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.hotel-dash-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.hotel-dash-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hotel-dash-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4A90E2;
+}
+
+.btn-small {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.btn-book {
+    background: #27ae60;
+    color: #ffffff;
+}
+
+.btn-book:hover {
+    background: #229954;
+    transform: translateY(-2px);
+}
+
+/* ==================== BUDGET ==================== */
+.budget-cards {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.budget-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.budget-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.budget-item:last-child {
+    border-bottom: none;
+}
+
+.budget-label {
+    font-size: 16px;
+    color: #555;
+}
+
+.budget-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.budget-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 15px;
+    border-top: 2px solid #4A90E2;
+}
+
+.budget-total .budget-value {
+    font-size: 24px;
+    color: #4A90E2;
+}
+
+/* ==================== REVIEW FORM ==================== */
+.review-form-container {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.review-form {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 10px;
+    font-size: 32px;
+    margin: 10px 0;
+}
+
+.star {
+    cursor: pointer;
+    color: #ffc107;
+    transition: transform 0.2s ease;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4A90E2;
+}
+
+/* ==================== BOOKINGS ==================== */
+.bookings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #27ae60;
+}
+
+.booking-info h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+
+.booking-info p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.booking-amount {
+    text-align: right;
+}
+
+.booking-amount strong {
+    font-size: 22px;
+    color: #27ae60;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.booking-status {
+    font-size: 12px;
+    color: #27ae60;
+    background: #d4edda;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+/* ==================== BOOKING MODAL ==================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.booking-hotel-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+}
+
+.booking-hotel-price {
+    font-size: 18px;
+    color: #4A90E2;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4A90E2;
+}
+
+.booking-total {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.booking-total span {
+    color: #27ae60;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 15px;
+    padding: 25px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.modal-footer button {
+    flex: 1;
+}
+
+/* ==================== STATES ==================== */
+.loading-state,
+.empty-state,
+.error-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 16px;
+}
+
+.error-state {
+    color: #e74c3c;
+}
+
+.empty-state a {
+    color: #4A90E2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.empty-state a:hover {
+    text-decoration: underline;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .current-dest-card {
+        flex-direction: column;
+    }
+    
+    .dest-image {
+        width: 100%;
+        height: 250px;
+    }
+    
+    .history-grid,
+    .hotels-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .itinerary-item {
+        flex-direction: column;
+    }
+    
+    .time-badge {
+        align-self: flex-start;
+    }
+    
+    .booking-item {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .booking-amount {
+        text-align: left;
+    }
+    
+    .dashboard-section {
+        padding: 25px 20px;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+}

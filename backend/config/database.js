@@ -28,10 +28,13 @@ const testConnection = async () => {
     try {
         const connection = await promisePool.getConnection();
         console.log('✅ MySQL Database Connected Successfully');
+        console.log(`   Host: ${process.env.DB_HOST}`);
+        console.log(`   Database: ${process.env.DB_NAME}`);
         connection.release();
         return true;
     } catch (error) {
         console.error('❌ MySQL Connection Error:', error.message);
+        console.error('   Please verify database credentials in .env file');
         return false;
     }
 };

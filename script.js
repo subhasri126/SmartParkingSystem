@@ -15,7 +15,9 @@ function showSlide(index) {
 }
 
 // Initialize default slide (planning/flat lay image)
-showSlide(4);
+if (slides.length > 0) {
+    showSlide(4);
+}
 
 // Add hover event listeners to category elements
 heroCategories.forEach(category => {
@@ -25,6 +27,72 @@ heroCategories.forEach(category => {
         showSlide(imageIndex);
     });
 });
+
+// ============================================
+// FEATURED DESTINATIONS - MAKE IMAGES CLICKABLE
+// ============================================
+let destinationsMap = {}; // Store name -> id mapping
+
+async function fetchDestinationsForNav() {
+    try {
+        const response = await fetch('http://localhost:5000/api/destinations');
+        if (!response.ok) throw new Error('Failed to fetch');
+        
+        const destinations = await response.json();
+        destinations.forEach(dest => {
+            destinationsMap[dest.name.toLowerCase()] = dest.id;
+        });
+        
+        setupFeaturedDestinationClicks();
+        setupPopularDestinationClicks();
+    } catch (error) {
+        console.error('Failed to fetch destinations for navigation:', error);
+    }
+}
+
+function setupFeaturedDestinationClicks() {
+    const carouselCards = document.querySelectorAll('.carousel-card');
+    carouselCards.forEach(card => {
+        const title = card.querySelector('.carousel-card-content h3');
+        if (title) {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                const destinationName = title.textContent.split(', ')[0].toLowerCase();
+                const destinationId = destinationsMap[destinationName];
+                if (destinationId) {
+                    window.location.href = `destination.html?id=${destinationId}`;
+                }
+            });
+        }
+    });
+}
+
+function setupPopularDestinationClicks() {
+    const destinationCards = document.querySelectorAll('.destination-card');
+    destinationCards.forEach(card => {
+        const title = card.querySelector('.destination-name');
+        if (title) {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                const destinationName = title.textContent.split(', ')[0].toLowerCase();
+                const destinationId = destinationsMap[destinationName];
+                if (destinationId) {
+                    window.location.href = `destination.html?id=${destinationId}`;
+                }
+            });
+        }
+    });
+}
+
+// ============================================
+// START EXPLORING BUTTON
+// ============================================
+const ctaBtn = document.querySelector('.cta-btn');
+if (ctaBtn) {
+    ctaBtn.addEventListener('click', () => {
+        window.location.href = 'explore.html';
+    });
+}
 
 // ============================================
 // STICKY NAVBAR WITH BACKDROP BLUR
@@ -42,14 +110,18 @@ window.addEventListener('scroll', () => {
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+}
 
 // Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+        if (navMenu) {
+            navMenu.classList.remove('active');
+        }
     });
 });
 
@@ -82,21 +154,23 @@ animateElements.forEach(el => {
 const searchBtn = document.querySelector('.search-btn');
 const searchInput = document.querySelector('.search-input');
 
-searchBtn.addEventListener('click', () => {
-    const searchTerm = searchInput.value.trim();
-    if (searchTerm) {
-        alert(`Searching for: ${searchTerm}\n\nThis is a demo search. In a real application, this would search for destinations, hotels, and restaurants.`);
-    } else {
-        alert('Please enter a search term');
-    }
-});
+if (searchBtn && searchInput) {
+    searchBtn.addEventListener('click', () => {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm) {
+            alert(`Searching for: ${searchTerm}\n\nThis is a demo search. In a real application, this would search for destinations, hotels, and restaurants.`);
+        } else {
+            alert('Please enter a search term');
+        }
+    });
 
-// Allow search on Enter key
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        searchBtn.click();
-    }
-});
+    // Allow search on Enter key
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchBtn.click();
+        }
+    });
+}
 
 // ============================================
 // CTA BUTTON INTERACTIONS
@@ -171,6 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize 3D Circular Carousel
     initCircularCarousel();
+    
+    // Fetch destinations and setup navigation for featured/popular cards
+    fetchDestinationsForNav();
 });
 
 // ============================================

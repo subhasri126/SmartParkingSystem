@@ -8,7 +8,7 @@ const AUTH_CONFIG = {
     OTP_DURATION: 300, // 5 minutes in seconds
     RESEND_COOLDOWN: 30, // 30 seconds
     MIN_PASSWORD_LENGTH: 8,
-    API_ENDPOINT: '/api/auth', // Replace with your actual API
+    API_ENDPOINT: 'http://localhost:5000/api/auth', // Connected to Backend
 };
 
 // ==================== STATE MANAGEMENT ====================
@@ -146,38 +146,37 @@ async function handleLogin(e) {
     setButtonLoading(submitBtn, true);
 
     try {
-        // Simulate API call
-        await simulateApiDelay(1500);
+        const response = await fetch(`${AUTH_CONFIG.API_ENDPOINT}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
-        // Check if user exists (simulated)
-        const userExists = true; // In real app, check from backend
-        const isVerified = true; // In real app, check from backend
+        const data = await response.json();
 
-        if (!userExists) {
-            showFormError('loginEmail', 'Email not registered');
-            setButtonLoading(submitBtn, false);
-            return;
-        }
-
-        if (!isVerified) {
-            // Show OTP verification
-            authState.otpEmail = email;
-            showOtpModal(email);
-            setButtonLoading(submitBtn, false);
-            return;
+        if (!response.ok) {
+            // Check if verification is needed
+            if (response.status === 403 && data.requires_verification) {
+                authState.otpEmail = email;
+                showOtpModal(email);
+                setButtonLoading(submitBtn, false);
+                return;
+            }
+            throw new Error(data.message || 'Login failed');
         }
 
         // Successful login
-        saveLoginData(email, document.getElementById('rememberMe').checked);
+        saveLoginData(data, document.getElementById('rememberMe').checked);
         showSuccessModal();
 
         // Redirect after delay
         setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         }, 2000);
+
     } catch (error) {
         console.error('Login error:', error);
-        showFormError('loginEmail', 'An error occurred. Please try again.');
+        showFormError('loginEmail', error.message);
         setButtonLoading(submitBtn, false);
     }
 }
@@ -236,23 +235,29 @@ async function handleRegister(e) {
     setButtonLoading(submitBtn, true);
 
     try {
-        // Simulate API call
-        await simulateApiDelay(1500);
+        const response = await fetch(`${AUTH_CONFIG.API_ENDPOINT}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ full_name: name, email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Registration failed');
+        }
 
         // Store user data temporarily
-        authState.userRegistering = {
-            name,
-            email,
-            password: hashPassword(password), // Simple hash (use proper hashing in production)
-        };
+        authState.userRegistering = { name, email };
 
         // Show OTP verification
         authState.otpEmail = email;
         showOtpModal(email);
         setButtonLoading(submitBtn, false);
+
     } catch (error) {
         console.error('Registration error:', error);
-        showFormError('registerName', 'An error occurred. Please try again.');
+        showFormError('registerName', error.message);
         setButtonLoading(submitBtn, false);
     }
 }
@@ -333,42 +338,42 @@ async function handleOtpVerification(e) {
     setButtonLoading(submitBtn, true);
 
     try {
-        // Simulate API call
-        await simulateApiDelay(1500);
+        const response = await fetch(`${AUTH_CONFIG.API_ENDPOINT}/verify-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: authState.otpEmail, otp })
+        });
 
-        // Simulate OTP verification (in real app, verify from backend)
-        if (otp === '123456') {
-            // OTP correct
-            closeOtpModal();
-            showSuccessModal();
+        const data = await response.json();
 
-            // Save verified data
-            if (authState.userRegistering) {
-                // Register user
-                saveRegistrationData(authState.userRegistering);
-            } else {
-                // Login user
-                saveLoginData(authState.otpEmail, false);
-            }
-
-            // Redirect after delay
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-        } else {
-            // OTP incorrect
-            showOtpError('Invalid verification code. Please try again.');
-            elements.otpInputs.forEach((input) => input.classList.add('error'));
-
-            setTimeout(() => {
-                elements.otpInputs.forEach((input) => input.classList.remove('error'));
-            }, 500);
-
-            setButtonLoading(submitBtn, false);
+        if (!response.ok) {
+            throw new Error(data.message || 'Verification failed');
         }
+
+        // OTP correct
+        closeOtpModal();
+        showSuccessModal();
+
+        // Save session data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('voyago_token', data.token);
+        localStorage.setItem('voyago_user', JSON.stringify(data.user));
+
+        // Redirect after delay
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
+
     } catch (error) {
         console.error('OTP verification error:', error);
-        showOtpError('An error occurred. Please try again.');
+        showOtpError(error.message);
+        elements.otpInputs.forEach((input) => input.classList.add('error'));
+
+        setTimeout(() => {
+            elements.otpInputs.forEach((input) => input.classList.remove('error'));
+        }, 500);
+
         setButtonLoading(submitBtn, false);
     }
 }
@@ -380,17 +385,37 @@ async function handleResendOtp() {
     elements.resendOtpBtn.disabled = true;
 
     try {
-        // Simulate sending OTP
-        await simulateApiDelay(1000);
+        const response = await fetch(`${AUTH_CONFIG.API_ENDPOINT}/resend-otp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: authState.otpEmail })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            if (response.status === 429) {
+                startResendTimer(data.remaining_seconds || AUTH_CONFIG.RESEND_COOLDOWN);
+                alert(data.message); // Or clearer UI feedback
+                return;
+            }
+            throw new Error(data.message || 'Failed to resend OTP');
+        }
 
         // Start resend timer
         startResendTimer(AUTH_CONFIG.RESEND_COOLDOWN);
 
         // Show confirmation
         console.log('OTP resent to ' + authState.otpEmail);
+        showOtpError('New code sent!'); // Reuse error styling for success message momentarily
+        const errorEl = document.querySelector('.otp-error');
+        if (errorEl) errorEl.style.color = 'green';
+        setTimeout(() => { if (errorEl) errorEl.style.color = ''; }, 3000);
+
     } catch (error) {
         console.error('Resend OTP error:', error);
         elements.resendOtpBtn.disabled = false;
+        showOtpError(error.message);
     }
 }
 
@@ -511,7 +536,7 @@ function showFormError(inputId, message) {
     if (!input) return;
 
     const errorElement = input.closest('.form-group')?.querySelector('.error-message') ||
-                        input.parentElement?.querySelector('.error-message');
+        input.parentElement?.querySelector('.error-message');
 
     if (errorElement) {
         errorElement.textContent = message;
@@ -526,7 +551,7 @@ function clearFormError(inputId) {
     if (!input) return;
 
     const errorElement = input.closest('.form-group')?.querySelector('.error-message') ||
-                        input.parentElement?.querySelector('.error-message');
+        input.parentElement?.querySelector('.error-message');
 
     if (errorElement) {
         errorElement.classList.remove('show');
@@ -622,40 +647,14 @@ function setButtonLoading(button, isLoading) {
     }
 }
 
-function simulateApiDelay(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function hashPassword(password) {
-    // Simple hash for demo (use bcrypt in production)
-    let hash = 0;
-    for (let i = 0; i < password.length; i++) {
-        const char = password.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash.toString();
-}
-
-function saveLoginData(email, remember) {
+function saveLoginData(data, remember) {
     if (remember) {
-        localStorage.setItem('voyago_email', email);
+        localStorage.setItem('voyago_email', data.user.email);
     }
-
-    // In production, save session token
-    localStorage.setItem('voyago_user', JSON.stringify({
-        email,
-        loginTime: new Date().toISOString(),
-    }));
-}
-
-function saveRegistrationData(userData) {
-    localStorage.setItem('voyago_user', JSON.stringify({
-        name: userData.name,
-        email: userData.email,
-        registerTime: new Date().toISOString(),
-        verified: true,
-    }));
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    localStorage.setItem('voyago_token', data.token);
+    localStorage.setItem('voyago_user', JSON.stringify(data.user));
 }
 
 function loadRememberedEmail() {
@@ -694,4 +693,3 @@ function setupNavbar() {
 }
 
 console.log('✅ Voyago Authentication System Initialized');
-console.log('💡 Test OTP: 123456');

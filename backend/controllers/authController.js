@@ -26,12 +26,19 @@ const generateToken = (userId) => {
 // @access  Public
 const register = async (req, res, next) => {
     try {
-        const { full_name, email, password } = req.body;
+        let { full_name, email, password } = req.body;
+
+        // Sanitize input
+        email = email ? email.trim().toLowerCase() : '';
+        full_name = full_name ? full_name.trim() : '';
+
+        console.log(`[Register] Attempting to register user: ${email}`);
 
         // Check if user already exists
         const existingUser = await User.findByEmail(email);
-        
+
         if (existingUser) {
+            console.log(`[Register] User already exists: ${email}, Verified: ${existingUser.is_verified}`);
             // If user exists but not verified, allow resending OTP
             if (!existingUser.is_verified) {
                 // Generate new OTP
@@ -39,10 +46,18 @@ const register = async (req, res, next) => {
                 const otpExpiry = new Date(Date.now() + (process.env.OTP_EXPIRY_MINUTES || 5) * 60000);
 
                 // Update OTP in database
+                console.log(`[Register] Updating OTP for existing user: ${email}`);
                 await User.updateOTP(email, otpCode, otpExpiry);
 
                 // Send OTP email
-                await sendOTPEmail(email, otpCode, existingUser.full_name);
+                console.log(`[Register] Sending OTP email to: ${email}`);
+                try {
+                    await sendOTPEmail(email, otpCode, existingUser.full_name);
+                    console.log(`[Register] OTP email sent successfully to: ${email}`);
+                } catch (emailError) {
+                    console.error(`[Register] Failed to send OTP email: ${emailError.message}`);
+                    throw new Error('Failed to send verification email. Please try again.');
+                }
 
                 return res.status(200).json({
                     success: true,
@@ -58,6 +73,7 @@ const register = async (req, res, next) => {
         }
 
         // Create new user
+        console.log(`[Register] Creating new user: ${email}`);
         const userId = await User.create({ full_name, email, password });
 
         // Generate OTP
@@ -65,10 +81,20 @@ const register = async (req, res, next) => {
         const otpExpiry = new Date(Date.now() + (process.env.OTP_EXPIRY_MINUTES || 5) * 60000);
 
         // Save OTP to database
+        console.log(`[Register] Saving OTP for new user: ${email}`);
         await User.updateOTP(email, otpCode, otpExpiry);
 
         // Send OTP email
-        await sendOTPEmail(email, otpCode, full_name);
+        console.log(`[Register] Sending OTP email to new user: ${email}`);
+        try {
+            await sendOTPEmail(email, otpCode, full_name);
+            console.log(`[Register] OTP email sent successfully to: ${email}`);
+        } catch (emailError) {
+            console.error(`[Register] Failed to send OTP email: ${emailError.message}`);
+            // Note: User is created but email failed. Ideally we should rollback or return error.
+            // For now, returning error so frontend knows.
+            throw new Error('User registered but failed to send verification email. Please try to login and resend OTP.');
+        }
 
         res.status(201).json({
             success: true,
@@ -78,6 +104,7 @@ const register = async (req, res, next) => {
         });
 
     } catch (error) {
+        console.error(`[Register] Error: ${error.message}`);
         next(error);
     }
 };

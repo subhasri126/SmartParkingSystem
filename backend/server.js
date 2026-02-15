@@ -12,6 +12,10 @@ require('dotenv').config();
 const { testConnection, closePool } = require('./config/database');
 const { verifyEmailService } = require('./utils/emailService');
 const authRoutes = require('./routes/authRoutes');
+const destinationRoutes = require('./routes/destinationRoutes');
+const hotelRoutes = require('./routes/hotelRoutes');
+const touristSpotsRoutes = require('./routes/touristSpotsRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 // Initialize Express app
@@ -24,9 +28,19 @@ const app = express();
 // Security headers
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration - Allow frontend origin and local file previews
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5500"
+];
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+        }
+        callback(new Error("Not allowed by CORS"));
+    },
     credentials: true
 }));
 
@@ -72,6 +86,11 @@ app.get('/health', (req, res) => {
     });
 });
 
+// Test endpoint for frontend connectivity
+app.get('/api/test', (req, res) => {
+    res.json({ message: "Backend working" });
+});
+
 // API info endpoint
 app.get('/api', (req, res) => {
     res.status(200).json({
@@ -83,13 +102,34 @@ app.get('/api', (req, res) => {
             verifyOTP: 'POST /api/auth/verify-otp',
             login: 'POST /api/auth/login',
             resendOTP: 'POST /api/auth/resend-otp',
-            getProfile: 'GET /api/auth/me (Protected)'
+            getProfile: 'GET /api/auth/me (Protected)',
+            destinations: 'GET /api/destinations',
+            featuredDestinations: 'GET /api/destinations/featured',
+            searchDestinations: 'GET /api/destinations/search'
         }
     });
 });
 
+// Request logging for debugging
+app.use('/api/destinations', (req, res, next) => {
+    console.log(`📍 [${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
+
 // Authentication routes
 app.use('/api/auth', authRoutes);
+
+// Destination routes
+app.use('/api/destinations', destinationRoutes);
+
+// Hotel routes
+app.use('/api/hotels', hotelRoutes);
+
+// Tourist spots routes
+app.use('/api/spots', touristSpotsRoutes);
+
+// Dashboard routes
+app.use('/api/dashboard', dashboardRoutes);
 
 // 404 handler
 app.use(notFound);
@@ -101,40 +141,52 @@ app.use(errorHandler);
 // SERVER INITIALIZATION
 // =====================================================
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 const startServer = async () => {
     try {
+        console.log('\n🔧 Initializing Voyago Backend Server...');
+        console.log('━'.repeat(60));
+
         // Test database connection
+        console.log('📊 Testing database connection...');
         const dbConnected = await testConnection();
         if (!dbConnected) {
-            console.error('❌ Failed to connect to database. Exiting...');
-            process.exit(1);
+            console.error('❌ Failed to connect to database.');
+            console.error('⚠️  Please check your MySQL credentials in .env file');
+            console.error('⚠️  Attempting to start server anyway...');
+            // Don't exit - allow server to start even if DB fails
         }
 
-        // Verify email service
-        await verifyEmailService();
+        // Verify email service (non-blocking - warn if fails)
+        try {
+            await verifyEmailService();
+        } catch (emailError) {
+            console.warn('⚠️  Email service not configured - authentication emails will fail');
+            console.warn('   Set EMAIL_USER and EMAIL_PASSWORD in .env to enable email');
+        }
 
         // Start server
         const server = app.listen(PORT, () => {
-            console.log('');
-            console.log('='.repeat(60));
-            console.log('✈️  VOYAGO AUTHENTICATION SERVER');
-            console.log('='.repeat(60));
-            console.log(`🚀 Server running in ${process.env.NODE_ENV} mode`);
-            console.log(`🌐 URL: http://localhost:${PORT}`);
+            console.log('\n' + '═'.repeat(60));
+            console.log('✈️  VOYAGO BACKEND SERVER - RUNNING');
+            console.log('═'.repeat(60));
+            console.log(`🚀 Server Mode: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`🌐 Server URL: http://localhost:${PORT}`);
             console.log(`📡 API Endpoint: http://localhost:${PORT}/api`);
             console.log(`💾 Database: ${process.env.DB_NAME}`);
-            console.log('='.repeat(60));
-            console.log('');
-            console.log('📋 Available Endpoints:');
+            console.log(`🔓 CORS Enabled: http://localhost:5173`);
+            console.log('═'.repeat(60));
+            console.log('\n📋 Available Endpoints:');
+            console.log('   GET  /api/test               - Test connectivity');
+            console.log('   GET  /health                 - Health check');
+            console.log('   GET  /api/destinations       - Get all destinations');
+            console.log('   GET  /api/destinations/:id   - Get destination by ID');
             console.log('   POST /api/auth/register      - Register new user');
-            console.log('   POST /api/auth/verify-otp    - Verify OTP code');
             console.log('   POST /api/auth/login         - Login user');
-            console.log('   POST /api/auth/resend-otp    - Resend OTP');
-            console.log('   GET  /api/auth/me            - Get user profile (Protected)');
-            console.log('='.repeat(60));
-            console.log('');
+            console.log('═'.repeat(60));
+            console.log('\n✅ Server is ready to accept connections!');
+            console.log('   Frontend should connect to: http://localhost:' + PORT + '\n');
         });
 
         // Graceful shutdown
