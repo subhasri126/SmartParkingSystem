@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home - Voyago</title>
+    <link rel="stylesheet" href="/app/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-brand">
+                <span>Voyago</span>
+                <span class="badge">User App</span>
+            </div>
+            <nav class="app-nav">
+                <a data-app-nav href="/app/home/">🏠 Home</a>
+                <a data-app-nav href="/app/explore/">🧭 Explore</a>
+                <a data-app-nav href="/app/parking/">🅿️ Smart Parking</a>
+                <a data-app-nav href="/app/my-trips/">🧳 My Trips</a>
+                <a data-app-nav href="/app/my-parking/">🚗 My Parking</a>
+                <a data-app-nav href="/app/reviews/">⭐ Reviews</a>
+                <a data-app-nav href="/app/profile/">👤 Profile</a>
+                <button id="appLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            <section class="app-hero">
+                <div class="app-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=80');"></div>
+                <div class="app-hero-content">
+                    <h1 class="app-title">Welcome back, <span id="userName">Traveler</span></h1>
+                    <p class="app-subtitle">Your trips, bookings, and itinerary updates — all in one view.</p>
+                </div>
+            </section>
+
+            <header class="app-header">
+                <div>
+                    <h2 class="app-title">Overview</h2>
+                    <p class="app-subtitle">Key highlights from your recent travel activity.</p>
+                </div>
+                <span class="badge">Account Active</span>
+            </header>
+
+            <section class="app-stats">
+                <div class="stat-card reveal">
+                    <div class="stat-icon">🧳</div>
+                    <div>
+                        <div class="stat-label">Trips</div>
+                        <div class="stat-value" id="statTrips">0</div>
+                    </div>
+                </div>
+                <div class="stat-card reveal">
+                    <div class="stat-icon">⭐</div>
+                    <div>
+                        <div class="stat-label">Reviews</div>
+                        <div class="stat-value" id="statReviews">0</div>
+                    </div>
+                </div>
+                <div class="stat-card reveal">
+                    <div class="stat-icon">💼</div>
+                    <div>
+                        <div class="stat-label">Budget</div>
+                        <div class="stat-value" id="statBudget">₹0</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="app-grid">
+                <article class="app-card">
+                    <h3>Suggested destination</h3>
+                    <p id="suggestedDestination">Loading suggestions...</p>
+                </article>
+                <article class="app-card">
+                    <h3>Recent searches</h3>
+                    <ul id="recentSearches" class="list-clean"></ul>
+                </article>
+                <article class="app-card">
+                    <h3>Saved trips</h3>
+                    <ul id="savedTrips" class="list-clean"></ul>
+                </article>
+            </section>
+
+            <section class="section-stack">
+                <div class="section-row">
+                    <div class="app-card">
+                        <h3>Today’s checklist</h3>
+                        <ul class="list-clean">
+                            <li>Confirm hotel check-in time.</li>
+                            <li>Review itinerary timing.</li>
+                            <li>Finalize local transport.</li>
+                        </ul>
+                    </div>
+                    <div class="app-card">
+                        <h3>Status overview</h3>
+                        <ul class="list-clean">
+                            <li>Bookings: Pending confirmation.</li>
+                            <li>Itinerary: Ready to review.</li>
+                            <li>Profile: Verified.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/app/layout.js"></script>
+    <script src="/app/home/home.js"></script>
+</body>
+</html>

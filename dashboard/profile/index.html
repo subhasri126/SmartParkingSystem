@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Voyago</title>
+    <link rel="stylesheet" href="/dashboard/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">
+                <span>Voyago</span>
+                <span class="badge">Dashboard</span>
+            </div>
+            <nav class="dashboard-nav">
+                <a data-dashboard-nav href="/dashboard/home/">Home</a>
+                <a data-dashboard-nav href="/dashboard/explore/">Explore</a>
+                <a data-dashboard-nav href="/dashboard/my-trips/">My Trips</a>
+                <a data-dashboard-nav href="/dashboard/profile/">Profile</a>
+                <button id="dashboardLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Profile</h1>
+                    <p class="dashboard-subtitle">Keep your contact and travel preferences up to date.</p>
+                </div>
+            </header>
+
+            <section class="section-row">
+                <article class="dashboard-card">
+                    <h3>Account details</h3>
+                    <p>Update your name, email, and phone so bookings and confirmations stay accurate.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Travel preferences</h3>
+                    <p>Set preferred budget range, trip styles, and accommodation choices for smarter recommendations.</p>
+                </article>
+            </section>
+
+            <section class="section-stack">
+                <div class="dashboard-card">
+                    <h3>Security</h3>
+                    <ul class="list-clean">
+                        <li>Change password regularly to keep your account secure.</li>
+                        <li>Review active sessions and sign out of unused devices.</li>
+                        <li>Enable email verification alerts.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/dashboard/layout.js"></script>
+</body>
+</html>

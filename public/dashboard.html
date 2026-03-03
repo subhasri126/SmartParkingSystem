@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - Voyago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <script>
+        window.location.replace('app/home/');
+    </script>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="url(#logoGradient)"/>
+                    <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Voyago</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore</a></li>
+                <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li><button class="nav-link btn-logout" id="logoutBtn">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1 class="dashboard-title">Welcome, <span id="userName">Traveler</span>! 🎉</h1>
+            <p class="dashboard-subtitle">Your personalized travel experience awaits</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Main Content -->
+    <section class="dashboard-content">
+        <div class="container">
+            
+            <!-- Current Destination Card -->
+            <div class="dashboard-section" id="currentDestSection">
+                <h2 class="section-heading">📍 Your Selected Destination</h2>
+                <div id="currentDestinationCard" class="loading-state">Loading destination...</div>
+            </div>
+
+            <!-- Search History -->
+            <div class="dashboard-section" id="historySection">
+                <h2 class="section-heading">🔍 Previously Searched Destinations</h2>
+                <div id="searchHistoryGrid" class="history-grid">
+                    <div class="loading-state">Loading your search history...</div>
+                </div>
+            </div>
+
+            <!-- Personalized Itinerary -->
+            <div class="dashboard-section" id="itinerarySection">
+                <h2 class="section-heading">📅 Your Personalized Itinerary</h2>
+                <div class="itinerary-info">✨ Generated based on ratings and your preferences</div>
+                <div id="itineraryContainer" class="itinerary-timeline">
+                    <div class="loading-state">Generating your itinerary...</div>
+                </div>
+            </div>
+
+            <!-- Hotels Section -->
+            <div class="dashboard-section" id="hotelsSection">
+                <h2 class="section-heading">🏨 Recommended Hotels</h2>
+                <div class="hotels-info" id="hotelTimeInfo">📍 Suggested based on your itinerary</div>
+                <div id="hotelsContainer" class="hotels-dashboard-grid">
+                    <div class="loading-state">Finding best hotels for you...</div>
+                </div>
+            </div>
+
+            <!-- Travel Budget -->
+            <div class="dashboard-section" id="budgetSection">
+                <h2 class="section-heading">💰 Travel Budget Estimation</h2>
+                <div id="budgetContainer" class="budget-cards">
+                    <div class="loading-state">Calculating budget...</div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="dashboard-section" id="reviewsSection">
+                <h2 class="section-heading">⭐ Share Your Experience</h2>
+                <div class="review-form-container">
+                    <form id="reviewForm" class="review-form">
+                        <div class="form-group">
+                            <label for="rating">Your Rating</label>
+                            <div class="star-rating" id="starRating">
+                                <span class="star" data-rating="1">☆</span>
+                                <span class="star" data-rating="2">☆</span>
+                                <span class="star" data-rating="3">☆</span>
+                                <span class="star" data-rating="4">☆</span>
+                                <span class="star" data-rating="5">☆</span>
+                            </div>
+                            <input type="hidden" id="ratingValue" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewText">Your Review</label>
+                            <textarea id="reviewText" rows="4" placeholder="Share your experience..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+                
+                <!-- My Bookings -->
+                <h3 class="subsection-heading">📋 My Bookings</h3>
+                <div id="bookingsContainer" class="bookings-list">
+                    <div class="loading-state">Loading your bookings...</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Book Hotel</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="bookingForm">
+                    <p class="booking-hotel-name" id="bookingHotelName"></p>
+                    <p class="booking-hotel-price" id="bookingHotelPrice"></p>
+                    <div class="form-group">
+                        <label>Check-in Date</label>
+                        <input type="date" id="checkInDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Check-out Date</label>
+                        <input type="date" id="checkOutDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Guests</label>
+                        <input type="number" id="numGuests" class="form-input" value="2" min="1">
+                    </div>
+                    <div class="booking-total">
+                        <strong>Total:</strong> <span id="bookingTotal">₹0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBooking">Cancel</button>
+                <button class="btn btn-primary" id="confirmBooking">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-script.js"></script>
+</body>
+</html>

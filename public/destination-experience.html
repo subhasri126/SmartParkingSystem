@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Experience - Voyago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="explore-styles.css">
+    <style>
+        /* Destination Experience Specific Styles */
+        .experience-section {
+            padding: 60px 0;
+            background: linear-gradient(to bottom, #f5f9ff 0%, #ffffff 100%);
+        }
+
+        .experience-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #2C3E50;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #34495E;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Hotels Grid */
+        .hotels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .hotel-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(74, 144, 226, 0.2);
+        }
+
+        .hotel-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hotel-info {
+            padding: 20px;
+        }
+
+        .hotel-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .hotel-rating {
+            color: #F39C12;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .hotel-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4A90E2;
+            margin-bottom: 12px;
+        }
+
+        .hotel-description {
+            font-size: 14px;
+            color: #7F8C8D;
+            line-height: 1.6;
+        }
+
+        /* Tourist Spots Grid */
+        .spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .spot-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .spot-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(74, 144, 226, 0.2);
+        }
+
+        .spot-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .spot-info {
+            padding: 20px;
+        }
+
+        .spot-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .spot-category {
+            display: inline-block;
+            background: rgba(74, 144, 226, 0.1);
+            color: #4A90E2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .spot-description {
+            font-size: 14px;
+            color: #7F8C8D;
+            line-height: 1.6;
+        }
+
+        /* Itinerary Section */
+        .itinerary-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 5px solid #4A90E2;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .itinerary-day {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4A90E2;
+            margin-bottom: 12px;
+        }
+
+        .itinerary-content {
+            font-size: 16px;
+            color: #34495E;
+            line-height: 1.8;
+        }
+
+        /* Transportation Section */
+        .transport-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4A90E2, #5BA3F5);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Transport Suggestions */
+        .transport-result {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(91, 163, 245, 0.1));
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #4A90E2;
+            display: none;
+        }
+
+        .transport-result.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .transport-mode {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4A90E2;
+            margin-bottom: 15px;
+        }
+
+        .transport-info {
+            font-size: 16px;
+            color: #34495E;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(74, 144, 226, 0.3);
+            border-top-color: #4A90E2;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7F8C8D;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-subtitle {
+                font-size: 18px;
+            }
+
+            .hotels-grid, .spots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transport-form {
+                padding: 20px;
+            }
+        }
+    </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="url(#logoGradient)"/>
+                    <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Voyago</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="auth.html" class="nav-link btn-logout" id="logoutBtn">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Destination Experience Hero -->
+    <section class="destination-hero" style="margin-top: 60px;">
+        <div class="destination-hero-bg" id="experienceHero"></div>
+        <div class="destination-hero-overlay"></div>
+        <div class="destination-hero-content">
+            <h1 class="destination-title" id="experienceTitle">Loading...</h1>
+            <p class="destination-subtitle" id="experienceSubtitle">Plan your perfect trip</p>
+        </div>
+    </section>
+
+    <!-- Hotels Section -->
+    <section class="experience-section">
+        <div class="experience-container">
+            <div class="section-subtitle">
+                <span>🏨 Recommended Hotels & Accommodations</span>
+            </div>
+            <div class="hotels-grid" id="hotelsGrid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏨</div>
+                    <p>Loading hotels...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tourist Spots Section -->
+    <section class="experience-section">
+        <div class="experience-container">
+            <div class="section-subtitle">
+                <span>📍 Must-Visit Tourist Spots</span>
+            </div>
+            <div class="spots-grid" id="spotsGrid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📍</div>
+                    <p>Loading tourist spots...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Itinerary Section -->
+    <section class="experience-section">
+        <div class="experience-container">
+            <div class="section-subtitle">
+                <span>📅 Suggested Itinerary</span>
+            </div>
+            <div id="itineraryContainer" style="max-width: 800px; margin: 0 auto;">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📅</div>
+                    <p>Generating itinerary...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transportation Section -->
+    <section class="experience-section">
+        <div class="experience-container">
+            <div class="section-subtitle">
+                <span>🚗 Transportation Suggestions</span>
+            </div>
+            <div class="transport-form">
+                <div class="form-group">
+                    <label for="startLocation">📍 Your Starting Location/City</label>
+                    <input 
+                        type="text" 
+                        id="startLocation" 
+                        placeholder="e.g., Delhi, Mumbai, Bangalore..."
+                        autocomplete="off"
+                    />
+                </div>
+                <button class="submit-btn" id="getTransportBtn">Get Transportation Suggestions</button>
+                <div class="transport-result" id="transportResult"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: linear-gradient(135deg, #2C3E50, #34495E); color: white; padding: 40px 20px; text-align: center; margin-top: 60px;">
+        <p>&copy; 2026 Voyago Travel Platform. All rights reserved.</p>
+        <p style="font-size: 14px; color: rgba(255, 255, 255, 0.7); margin-top: 10px;">Plan. Explore. Experience the World.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="destination-experience-script.js"></script>
+</body>
+</html>

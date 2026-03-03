@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Voyago</title>
+    <link rel="stylesheet" href="/app/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-brand">
+                <span>Voyago</span>
+                <span class="badge">User App</span>
+            </div>
+            <nav class="app-nav">
+                <a data-app-nav href="/app/home/">🏠 Home</a>
+                <a data-app-nav href="/app/explore/">🧭 Explore</a>
+                <a data-app-nav href="/app/parking/">🅿️ Smart Parking</a>
+                <a data-app-nav href="/app/my-trips/">🧳 My Trips</a>
+                <a data-app-nav href="/app/my-parking/">🚗 My Parking</a>
+                <a data-app-nav href="/app/reviews/">⭐ Reviews</a>
+                <a data-app-nav href="/app/profile/">👤 Profile</a>
+                <button id="appLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            <header class="app-header">
+                <div>
+                    <h1 class="app-title">Profile</h1>
+                    <p class="app-subtitle">Review your account details and travel preferences.</p>
+                </div>
+            </header>
+
+            <section class="section-row">
+                <article class="app-card">
+                    <h3>Account details</h3>
+                    <ul id="profileDetails" class="list-clean"></ul>
+                </article>
+                <article class="app-card">
+                    <h3>Preferences</h3>
+                    <ul class="list-clean">
+                        <li>Preferred trip type: Balanced</li>
+                        <li>Budget range: Mid</li>
+                        <li>Travel pace: Moderate</li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="/app/layout.js"></script>
+    <script src="/app/profile/profile.js"></script>
+</body>
+</html>
