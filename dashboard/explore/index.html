@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Explore - Voyago</title>
+    <link rel="stylesheet" href="/dashboard/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">
+                <span>Voyago</span>
+                <span class="badge">Dashboard</span>
+            </div>
+            <nav class="dashboard-nav">
+                <a data-dashboard-nav href="/dashboard/home/">Home</a>
+                <a data-dashboard-nav href="/dashboard/explore/">Explore</a>
+                <a data-dashboard-nav href="/dashboard/my-trips/">My Trips</a>
+                <a data-dashboard-nav href="/dashboard/profile/">Profile</a>
+                <button id="dashboardLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Explore destinations</h1>
+                    <p class="dashboard-subtitle">Browse curated destinations, popular routes, and seasonal highlights.</p>
+                </div>
+            </header>
+
+            <section class="section-row">
+                <article class="dashboard-card">
+                    <h3>Recommended for you</h3>
+                    <p>Based on your recent searches, explore curated destinations with balanced budgets and strong ratings.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Trending this month</h3>
+                    <p>Discover high-demand destinations and secure stays early for better availability.</p>
+                </article>
+            </section>
+
+            <section class="section-stack">
+                <div class="dashboard-card">
+                    <h3>Saved searches</h3>
+                    <ul class="list-clean">
+                        <li>City breaks with 3-4 day itineraries.</li>
+                        <li>Nature-focused destinations with guided activities.</li>
+                        <li>Family-friendly stays and transport options.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/dashboard/layout.js"></script>
+</body>
+</html>

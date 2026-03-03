@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking - Voyago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="smart-parking-styles.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="url(#logoGradient)"/>
+                    <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Voyago</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore</a></li>
+                <li><a href="smart-parking.html" class="nav-link active">Smart Parking</a></li>
+                <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="auth.html" class="nav-link btn-login">Login</a></li>
+                <li><a href="auth.html" class="nav-link btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Smart Parking Hero -->
+    <section class="parking-hero">
+        <div class="parking-hero-bg"></div>
+        <div class="parking-hero-overlay"></div>
+        <div class="parking-hero-content">
+            <h1 class="parking-hero-title">🅿️ Smart Parking System</h1>
+            <p class="parking-hero-subtitle">Real-time IoT-powered parking management for smart travel</p>
+        </div>
+        <div class="hero-divider">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,50 Q360,0 720,50 T1440,50 L1440,100 L0,100 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Parking Summary Stats -->
+    <section class="parking-stats-section">
+        <div class="container">
+            <div class="parking-stats-grid" id="parkingStatsGrid">
+                <div class="stat-box total">
+                    <div class="stat-icon">🚗</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="statTotal">--</span>
+                        <span class="stat-label">Total Slots</span>
+                    </div>
+                </div>
+                <div class="stat-box available">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="statAvailable">--</span>
+                        <span class="stat-label">Available</span>
+                    </div>
+                </div>
+                <div class="stat-box occupied">
+                    <div class="stat-icon">🚙</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="statOccupied">--</span>
+                        <span class="stat-label">Occupied</span>
+                    </div>
+                </div>
+                <div class="stat-box reserved">
+                    <div class="stat-icon">📌</div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="statReserved">--</span>
+                        <span class="stat-label">Reserved</span>
+                    </div>
+                </div>
+            </div>
+            <div class="last-update-info">
+                <span>🔄 Auto-refreshing every 5 seconds</span>
+                <span class="update-time">Last updated: <strong id="lastUpdateTime">--</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legend Section -->
+    <section class="legend-section">
+        <div class="container">
+            <div class="legend-container">
+                <h3>Slot Status Legend</h3>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color available"></div>
+                        <span>Available - Click to Reserve</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color occupied"></div>
+                        <span>Occupied - Currently in use</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color reserved"></div>
+                        <span>Reserved - Will expire in 10 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parking Slots Grid -->
+    <section class="parking-grid-section">
+        <div class="container">
+            <h2 class="section-title">Parking Slot Map</h2>
+            <div class="parking-slots-container">
+                <div class="parking-slots-grid" id="parkingSlotsGrid">
+                    <!-- Slots will be dynamically loaded -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading parking slots...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Modal -->
+    <div class="modal-overlay" id="reservationModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-icon">🅿️</div>
+            <h3 class="modal-title">Reserve Parking Slot</h3>
+            <p class="modal-slot-info">Slot #<span id="modalSlotNumber">--</span></p>
+            <div class="modal-details">
+                <p>⏱️ Reservation expires automatically after <strong>10 minutes</strong></p>
+                <p>📍 Make sure to arrive within the time limit</p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="modalCancel">Cancel</button>
+                <button class="modal-btn confirm" id="modalConfirm">Confirm Reservation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✅</span>
+        <span class="toast-message" id="toastMessage">Slot reserved successfully!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-logo">Voyago</h3>
+                    <p class="footer-description">Smart travel with IoT-powered parking solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="explore.html">Explore</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@voyago.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Voyago. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="smart-parking-script.js"></script>
+</body>
+</html>

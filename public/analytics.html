@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Analytics - Voyago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="analytics-styles.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="url(#logoGradient)"/>
+                    <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Voyago</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore</a></li>
+                <li><a href="smart-parking.html" class="nav-link">Smart Parking</a></li>
+                <li><a href="analytics.html" class="nav-link active">Analytics</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="auth.html" class="nav-link btn-login">Login</a></li>
+                <li><a href="auth.html" class="nav-link btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Analytics Hero -->
+    <section class="analytics-hero">
+        <div class="analytics-hero-bg"></div>
+        <div class="analytics-hero-overlay"></div>
+        <div class="analytics-hero-content">
+            <h1 class="analytics-hero-title">📊 Parking Analytics</h1>
+            <p class="analytics-hero-subtitle">Gain insights into parking usage patterns and optimize your travel planning</p>
+        </div>
+        <div class="hero-divider">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,50 Q360,0 720,50 T1440,50 L1440,100 L0,100 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Quick Stats Section -->
+    <section class="quick-stats-section">
+        <div class="container">
+            <div class="quick-stats-grid">
+                <div class="quick-stat-card">
+                    <div class="quick-stat-icon">📈</div>
+                    <div class="quick-stat-info">
+                        <span class="quick-stat-number" id="totalLogs">--</span>
+                        <span class="quick-stat-label">Total Status Changes</span>
+                    </div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="quick-stat-icon">🚗</div>
+                    <div class="quick-stat-info">
+                        <span class="quick-stat-number" id="totalOccupied">--</span>
+                        <span class="quick-stat-label">Total Occupied Events</span>
+                    </div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="quick-stat-icon">📌</div>
+                    <div class="quick-stat-info">
+                        <span class="quick-stat-number" id="totalReserved">--</span>
+                        <span class="quick-stat-label">Total Reservations</span>
+                    </div>
+                </div>
+                <div class="quick-stat-card">
+                    <div class="quick-stat-icon">⏱️</div>
+                    <div class="quick-stat-info">
+                        <span class="quick-stat-number" id="avgDuration">--</span>
+                        <span class="quick-stat-label">Avg. Occupancy (min)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+        <div class="container">
+            <div class="charts-grid">
+                <!-- Peak Hours Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">🕐 Peak Hours Analysis</h3>
+                        <p class="chart-description">Parking occupancy by hour of day</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="peakHoursChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Daily Occupancy Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">📅 Daily Occupancy Trend</h3>
+                        <p class="chart-description">Parking usage over the last 30 days</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="dailyOccupancyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Most Used Slots -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">🏆 Top 5 Most Used Slots</h3>
+                        <p class="chart-description">Slots with highest usage frequency</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="mostUsedSlotsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Status Distribution -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">📊 Status Distribution</h3>
+                        <p class="chart-description">Overall parking status breakdown</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="statusDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section class="insights-section">
+        <div class="container">
+            <h2 class="section-title">💡 Key Insights</h2>
+            <div class="insights-grid" id="insightsGrid">
+                <!-- Insights will be dynamically loaded -->
+                <div class="loading-insights">
+                    <div class="spinner"></div>
+                    <p>Analyzing parking data...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-logo">Voyago</h3>
+                    <p class="footer-description">Smart travel with IoT-powered parking analytics.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="explore.html">Explore</a></li>
+                        <li><a href="smart-parking.html">Smart Parking</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@voyago.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Voyago. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="analytics-script.js"></script>
+</body>
+</html>

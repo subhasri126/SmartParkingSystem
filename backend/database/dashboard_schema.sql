@@ -35,6 +35,26 @@ CREATE TABLE IF NOT EXISTS hotel_bookings (
     INDEX idx_check_in (check_in)
 );
 
+-- Quick Bookings Table
+CREATE TABLE IF NOT EXISTS bookings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    hotel_id INT NOT NULL,
+    destination_id INT NOT NULL,
+    check_in_date DATE,
+    check_out_date DATE,
+    nights INT,
+    total_price DECIMAL(10, 2) NOT NULL,
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'confirmed'
+);
+
+-- Add columns if they don't exist (for existing tables)
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS check_in_date DATE;
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS check_out_date DATE;
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS nights INT;
+ALTER TABLE bookings CHANGE COLUMN IF EXISTS price total_price DECIMAL(10, 2);
+
 -- User Reviews Table
 CREATE TABLE IF NOT EXISTS user_reviews (
     id INT PRIMARY KEY AUTO_INCREMENT,

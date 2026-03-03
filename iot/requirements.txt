@@ -1,0 +1,17 @@
+# Voyago Smart Parking - Python QR Scanner Dependencies
+# Install with: pip install -r requirements.txt
+
+# OpenCV for camera access and image processing
+opencv-python>=4.8.0
+
+# pyzbar for QR code decoding
+pyzbar>=0.1.9
+
+# Requests for HTTP API calls
+requests>=2.31.0
+
+# PySerial for ESP32 serial communication
+pyserial>=3.5
+
+# Optional: For better terminal output
+colorama>=0.4.6

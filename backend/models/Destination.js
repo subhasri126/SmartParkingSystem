@@ -12,8 +12,7 @@ class Destination {
             page = 1,
             limit = 9,
             category = null,
-            country = null,
-            continent = null,
+            state = null,
             sort = 'rating'
         } = options;
 
@@ -29,14 +28,9 @@ class Destination {
             queryParams.push(category);
         }
 
-        if (country) {
-            whereConditions.push('country LIKE ?');
-            queryParams.push(`%${country}%`);
-        }
-
-        if (continent) {
-            whereConditions.push('continent = ?');
-            queryParams.push(continent);
+        if (state) {
+            whereConditions.push('state = ?');
+            queryParams.push(state);
         }
 
         const whereClause = whereConditions.length > 0 
@@ -47,10 +41,10 @@ class Destination {
         let orderBy = 'rating DESC';
         switch (sort) {
             case 'price_low':
-                orderBy = 'price_starting ASC';
+                orderBy = 'average_budget ASC';
                 break;
             case 'price_high':
-                orderBy = 'price_starting DESC';
+                orderBy = 'average_budget DESC';
                 break;
             case 'rating':
                 orderBy = 'rating DESC';
@@ -78,13 +72,19 @@ class Destination {
         selectParams.push(limitNum, offsetNum);
         
         const query = `
-            SELECT * FROM destinations 
+            SELECT *, average_budget as price_starting FROM destinations 
             ${whereClause}
             ORDER BY ${orderBy}
             LIMIT ? OFFSET ?
         `;
         
         const [rows] = await pool.query(query, selectParams);
+        
+        // Add backward compatibility fields
+        rows.forEach(row => {
+            row.country = 'India';
+            row.continent = 'Asia';
+        });
 
         return {
             destinations: rows,
@@ -100,46 +100,60 @@ class Destination {
     // Get featured destinations
     static async getFeatured() {
         const query = `
-            SELECT * FROM destinations 
+            SELECT *, average_budget as price_starting FROM destinations 
             WHERE is_featured = TRUE 
             ORDER BY rating DESC
         `;
         
         const [rows] = await pool.execute(query);
+        
+        // Add backward compatibility fields
+        rows.forEach(row => {
+            row.country = 'India';
+            row.continent = 'Asia';
+        });
+        
         return rows;
     }
 
     // Get destination by ID
     static async getById(id) {
-        const query = 'SELECT * FROM destinations WHERE id = ?';
+        const query = 'SELECT *, average_budget as price_starting FROM destinations WHERE id = ?';
         const [rows] = await pool.execute(query, [id]);
+        if (rows[0]) {
+            rows[0].country = 'India';
+            rows[0].continent = 'Asia';
+        }
         return rows[0];
     }
 
-    // Get all unique countries
-    static async getCountries() {
-        const query = 'SELECT DISTINCT country FROM destinations ORDER BY country ASC';
+    // Get all unique states
+    static async getStates() {
+        const query = 'SELECT DISTINCT state FROM destinations ORDER BY state ASC';
         const [rows] = await pool.execute(query);
-        return rows.map(row => row.country);
+        return rows.map(row => row.state);
     }
 
-    // Get all unique continents
+    // Get all unique countries (for backward compatibility)
+    static async getCountries() {
+        return ['India'];
+    }
+
+    // Get all unique continents (for backward compatibility)
     static async getContinents() {
-        const query = 'SELECT DISTINCT continent FROM destinations ORDER BY continent ASC';
-        const [rows] = await pool.execute(query);
-        return rows.map(row => row.continent);
+        return ['Asia'];
     }
 
     // Get all categories
     static getCategories() {
-        return ['Beach', 'Mountain', 'City', 'Cultural', 'Nature', 'Island', 'Desert'];
+        return ['Beach', 'Hill Station', 'Heritage', 'Nature', 'City', 'Spiritual'];
     }
 
     // Search destinations by name or description
     static async search(searchTerm, limit = 10) {
         const query = `
-            SELECT * FROM destinations 
-            WHERE name LIKE ? OR description LIKE ? OR country LIKE ?
+            SELECT *, average_budget as price_starting FROM destinations 
+            WHERE name LIKE ? OR description LIKE ? OR state LIKE ?
             ORDER BY rating DESC
             LIMIT ?
         `;
@@ -151,6 +165,12 @@ class Destination {
             searchPattern, 
             parseInt(limit)
         ]);
+        
+        // Add backward compatibility fields
+        rows.forEach(row => {
+            row.country = 'India';
+            row.continent = 'Asia';
+        });
         
         return rows;
     }

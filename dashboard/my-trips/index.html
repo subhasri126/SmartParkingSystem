@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Trips - Voyago</title>
+    <link rel="stylesheet" href="/dashboard/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">
+                <span>Voyago</span>
+                <span class="badge">Dashboard</span>
+            </div>
+            <nav class="dashboard-nav">
+                <a data-dashboard-nav href="/dashboard/home/">Home</a>
+                <a data-dashboard-nav href="/dashboard/explore/">Explore</a>
+                <a data-dashboard-nav href="/dashboard/my-trips/">My Trips</a>
+                <a data-dashboard-nav href="/dashboard/profile/">Profile</a>
+                <button id="dashboardLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">My trips</h1>
+                    <p class="dashboard-subtitle">Manage itineraries, hotel bookings, and travel schedules in one place.</p>
+                </div>
+            </header>
+
+            <section class="section-row">
+                <article class="dashboard-card">
+                    <h3>Active itinerary</h3>
+                    <p>Your latest itinerary is ready. Review timing, hotels, and experience slots before departure.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Bookings overview</h3>
+                    <p>Track confirmations, payment status, and check-in dates for each trip.</p>
+                </article>
+            </section>
+
+            <section class="section-stack">
+                <div class="dashboard-card">
+                    <h3>Upcoming checklist</h3>
+                    <ul class="list-clean">
+                        <li>Verify travel dates and hotel booking references.</li>
+                        <li>Review itinerary day plan and transport links.</li>
+                        <li>Download vouchers and keep IDs ready.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/dashboard/layout.js"></script>
+</body>
+</html>

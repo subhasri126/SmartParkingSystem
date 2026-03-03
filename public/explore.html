@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Destinations - Voyago</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="explore-styles.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" r="14" fill="url(#logoGradient)"/>
+                    <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">Voyago</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link active">Explore</a></li>
+                <li><a href="smart-parking.html" class="nav-link">Smart Parking</a></li>
+                <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="auth.html" class="nav-link btn-login">Login</a></li>
+                <li><a href="auth.html" class="nav-link btn-register">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Explore Hero Section -->
+    <section class="explore-hero">
+        <div class="explore-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80');"></div>
+        <div class="explore-hero-overlay"></div>
+        <div class="explore-hero-content">
+            <h1 class="explore-hero-title">Explore India</h1>
+            <p class="explore-hero-subtitle">Discover breathtaking destinations across Incredible India</p>
+        </div>
+        <div class="hero-divider">
+            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,50 Q360,0 720,50 T1440,50 L1440,100 L0,100 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Advanced Search Bar Section -->
+    <section class="advanced-search-section">
+        <div class="container">
+            <div class="advanced-search-container">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        class="advanced-search-input"
+                        id="advancedSearchInput"
+                        placeholder="Search destinations by name or state..."
+                        autocomplete="off"
+                    />
+                    <div class="search-highlight"></div>
+                </div>
+                <div class="search-suggestions" id="searchSuggestions" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-filter-container">
+                <div class="filter-box">
+                    <div class="filter-icon">📍</div>
+                    <select class="filter-select" id="destinationFilter">
+                        <option value="">All States</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Assam">Assam</option>
+                    </select>
+                </div>
+
+                <div class="filter-box">
+                    <div class="filter-icon">💰</div>
+                    <select class="filter-select" id="budgetFilter">
+                        <option value="">All Budgets</option>
+                        <option value="budget">Budget (Under ₹3,000)</option>
+                        <option value="moderate">Moderate (₹3,000-₹6,000)</option>
+                        <option value="luxury">Luxury (Above ₹6,000)</option>
+                    </select>
+                </div>
+
+                <div class="filter-box">
+                    <div class="filter-icon">🏖️</div>
+                    <select class="filter-select" id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="Beach">Beach</option>
+                        <option value="Hill Station">Hill Station</option>
+                        <option value="Heritage">Heritage</option>
+                        <option value="Nature">Nature</option>
+                        <option value="City">City</option>
+                        <option value="Spiritual">Spiritual</option>
+                    </select>
+                </div>
+
+                <button class="filter-search-btn">
+                    <span class="filter-icon">🔍</span>
+                    Search
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Grid Section -->
+    <section class="destinations-section">
+        <div class="container">
+            <div class="destinations-grid" id="destinationsGrid">
+                <!-- Destination cards will be loaded dynamically from API -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Collection Section -->
+    <section class="featured-collection-section">
+        <div class="container">
+            <h2 class="section-title">Featured Collections</h2>
+            <p class="section-subtitle">Curated experiences across Incredible India</p>
+            
+            <div class="featured-scroll-container">
+                <div class="featured-scroll">
+                    <div class="featured-item">
+                        <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80');"></div>
+                        <div class="featured-overlay">
+                            <h3 class="featured-title">Beach Escapes</h3>
+                            <p class="featured-desc">Goa & Coastal India</p>
+                        </div>
+                    </div>
+
+                    <div class="featured-item">
+                        <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80');"></div>
+                        <div class="featured-overlay">
+                            <h3 class="featured-title">Hill Stations</h3>
+                            <p class="featured-desc">Himalayan Retreats</p>
+                        </div>
+                    </div>
+
+                    <div class="featured-item">
+                        <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&q=80');"></div>
+                        <div class="featured-overlay">
+                            <h3 class="featured-title">Heritage Sites</h3>
+                            <p class="featured-desc">Royal Rajasthan</p>
+                        </div>
+                    </div>
+
+                    <div class="featured-item">
+                        <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80');"></div>
+                        <div class="featured-overlay">
+                            <h3 class="featured-title">Spiritual Journeys</h3>
+                            <p class="featured-desc">Sacred Destinations</p>
+                        </div>
+                    </div>
+
+                    <div class="featured-item">
+                        <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80');"></div>
+                        <div class="featured-overlay">
+                            <h3 class="featured-title">Nature Escapes</h3>
+                            <p class="featured-desc">Kerala Backwaters</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32">
+                            <circle cx="16" cy="16" r="14" fill="url(#footerLogoGradient)"/>
+                            <path d="M16 8 L20 18 L16 16 L12 18 Z" fill="white"/>
+                            <defs>
+                                <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#5BA3F5;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span>Voyago</span>
+                    </div>
+                    <p class="footer-desc">Explore the world smarter with personalized travel experiences and unforgettable adventures.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="explore.html">Explore</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="auth.html">Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Voyago. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="explore-script.js"></script>
+</body>
+</html>

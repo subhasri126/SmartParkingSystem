@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Explore - Voyago</title>
+    <link rel="stylesheet" href="/app/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-brand">
+                <span>Voyago</span>
+                <span class="badge">User App</span>
+            </div>
+            <nav class="app-nav">
+                <a data-app-nav href="/app/home/">🏠 Home</a>
+                <a data-app-nav href="/app/explore/">🧭 Explore</a>
+                <a data-app-nav href="/app/parking/">🅿️ Smart Parking</a>
+                <a data-app-nav href="/app/my-trips/">🧳 My Trips</a>
+                <a data-app-nav href="/app/my-parking/">🚗 My Parking</a>
+                <a data-app-nav href="/app/reviews/">⭐ Reviews</a>
+                <a data-app-nav href="/app/profile/">👤 Profile</a>
+                <button id="appLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            <header class="app-header">
+                <div>
+                    <h1 class="app-title">Explore curated destinations</h1>
+                    <p class="app-subtitle">Review destinations tailored to your preferences and travel goals.</p>
+                </div>
+            </header>
+
+            <section class="app-section">
+                <div class="app-card reveal">
+                    <div class="section-head">
+                        <h3>Select destination</h3>
+                        <p>Choose a destination to unlock tailored spots, stays, and itinerary.</p>
+                    </div>
+                    <select id="appDestinationSelect"></select>
+                </div>
+                <div id="destinationHero" class="app-hero app-hero--compact reveal"></div>
+            </section>
+
+            <section class="app-section">
+                <div class="section-head">
+                    <h3>Tourist spots</h3>
+                    <p>Handpicked highlights to anchor your day.</p>
+                </div>
+                <div id="spotsList" class="card-grid spots-grid"></div>
+            </section>
+
+            <section class="app-section">
+                <div class="section-head">
+                    <h3>Hotels</h3>
+                    <p>Curated stays with flexible budgets.</p>
+                </div>
+                <div id="hotelsList" class="card-grid hotels-grid"></div>
+            </section>
+
+            <section class="app-section app-split">
+                <article class="app-card reveal">
+                    <div class="section-head">
+                        <h3>Travel allowance</h3>
+                        <p>Clear breakdown by category.</p>
+                    </div>
+                    <div class="budget-breakdown">
+                        <div class="budget-row"><span>Hotel</span><span id="budgetHotel">₹0</span></div>
+                        <div class="budget-bar"><span id="progressHotel"></span></div>
+                        <div class="budget-row"><span>Food</span><span id="budgetFood">₹0</span></div>
+                        <div class="budget-bar"><span id="progressFood"></span></div>
+                        <div class="budget-row"><span>Transport</span><span id="budgetTransport">₹0</span></div>
+                        <div class="budget-bar"><span id="progressTransport"></span></div>
+                        <div class="budget-row"><span>Entry tickets</span><span id="budgetTickets">₹0</span></div>
+                        <div class="budget-bar"><span id="progressTickets"></span></div>
+                        <div class="budget-total"><span>Total</span><span id="budgetTotal">₹0</span></div>
+                    </div>
+                </article>
+                <article class="app-card reveal">
+                    <div class="section-head">
+                        <h3>Hotel suggestion</h3>
+                        <p>Best-fit stay based on time and budget.</p>
+                    </div>
+                    <div id="hotelSuggestion" class="suggestion-card">
+                        <p>Select a destination to see a suggestion.</p>
+                    </div>
+                </article>
+            </section>
+
+            <section class="app-section">
+                <div class="app-card reveal">
+                    <div class="section-head">
+                        <h3>Itinerary</h3>
+                        <p>Ready-to-go timeline built around top spots.</p>
+                    </div>
+                    <button id="generateItinerary" class="app-button">Generate itinerary</button>
+                    <div id="itineraryOutput" class="timeline"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-header">
+                <h2>Confirm your booking</h2>
+                <p>Review and complete your hotel reservation</p>
+            </div>
+            <div class="modal-body">
+                <div class="booking-summary">
+                    <div class="booking-hotel-info">
+                        <img id="bookingHotelImage" src="" alt="Hotel" class="booking-hotel-image">
+                        <div>
+                            <h3 id="bookingHotelName"></h3>
+                            <p id="bookingHotelLocation"></p>
+                            <div class="booking-rating">
+                                <span id="bookingHotelRating">★★★★★</span>
+                                <span id="bookingHotelPrice" class="booking-price-per-night"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="bookingForm" class="booking-form">
+                    <div class="form-group">
+                        <label for="checkInDate">Check-in date</label>
+                        <input type="date" id="checkInDate" required>
+                        <small>Select your arrival date</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkOutDate">Check-out date</label>
+                        <input type="date" id="checkOutDate" required>
+                        <small>Select your departure date</small>
+                    </div>
+
+                    <div class="booking-breakdown">
+                        <div class="breakdown-row">
+                            <span>Price per night</span>
+                            <span id="pricePerNight">₹0</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span id="nightsLabel">Nights</span>
+                            <span id="nightsCount">0</span>
+                        </div>
+                        <div class="breakdown-row breakdown-row--total">
+                            <span>Total price</span>
+                            <span id="totalPrice">₹0</span>
+                        </div>
+                    </div>
+
+                    <div id="bookingError" class="booking-error"></div>
+
+                    <button type="submit" id="confirmBookingBtn" class="app-button app-button--primary" disabled>
+                        <span id="confirmBtnText">Confirm booking</span>
+                        <span id="confirmBtnLoader" class="spinner" style="display: none;"></span>
+                    </button>
+                    <button type="button" class="app-button app-button--secondary modal-close-btn">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app/layout.js"></script>
+    <script src="/app/explore/explore.js"></script>
+</body>
+</html>

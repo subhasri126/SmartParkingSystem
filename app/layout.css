@@ -1,0 +1,1106 @@
+/* ==================== USER APP LAYOUT ==================== */
+:root {
+    --app-primary: #4A90E2;
+    --app-primary-dark: #2F6FBF;
+    --app-bg: #f6f8fb;
+    --app-text: #1a1a2e;
+    --app-muted: #6b7280;
+    --app-card: #ffffff;
+    --app-border: #e6e9f2;
+    --app-radius: 16px;
+    --app-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --app-shadow-hover: 0 18px 35px rgba(0, 0, 0, 0.12);
+    --app-transition: 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #f7f9ff 0%, #f4f6fb 45%, #eef2f7 100%);
+    color: var(--app-text);
+}
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+}
+
+.app-sidebar {
+    width: 240px;
+    background: #0f172a;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    gap: 24px;
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.app-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.app-nav a,
+.app-nav button {
+    text-decoration: none;
+    color: #cbd5f5;
+    font-size: 15px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.app-nav a:hover,
+.app-nav button:hover {
+    background: rgba(74, 144, 226, 0.18);
+    color: #ffffff;
+}
+
+.app-nav a.active {
+    background: rgba(74, 144, 226, 0.3);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.app-main {
+    flex: 1;
+    padding: 32px 40px;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.app-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.app-subtitle {
+    font-size: 14px;
+    color: var(--app-muted);
+    margin-top: 6px;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.app-card {
+    background: var(--app-card);
+    border: 1px solid #eef1f6;
+    border-radius: var(--app-radius);
+    padding: 20px;
+    box-shadow: var(--app-shadow);
+    transition: transform var(--app-transition), box-shadow var(--app-transition);
+}
+
+.app-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--app-shadow-hover);
+}
+
+.app-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.app-card p {
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.section-stack {
+    display: grid;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.section-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.section-row .app-card {
+    flex: 1 1 260px;
+}
+
+.list-clean {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.list-clean li {
+    background: #f9fafc;
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--app-text);
+    font-size: 14px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(74, 144, 226, 0.12);
+    color: var(--app-primary-dark);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+select,
+textarea,
+input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--app-border);
+    font-size: 14px;
+    font-family: inherit;
+    margin-top: 8px;
+    margin-bottom: 14px;
+    background: #ffffff;
+}
+
+.review-form label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--app-muted);
+    font-weight: 600;
+}
+
+.review-submit {
+    background: var(--app-primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.review-submit:hover {
+    background: var(--app-primary-dark);
+}
+
+.app-button {
+    background: var(--app-primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--app-transition), background var(--app-transition);
+}
+
+.app-button:hover {
+    background: var(--app-primary-dark);
+    transform: translateY(-2px);
+}
+
+.app-hero {
+    position: relative;
+    height: min(60vh, 56.25vw);
+    min-height: 420px;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    box-shadow: 0 30px 70px rgba(15, 23, 42, 0.2);
+}
+
+.app-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(5, 12, 22, 0.25), rgba(5, 12, 22, 0.7));
+    z-index: 1;
+}
+
+.app-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.05);
+}
+
+.app-hero-content {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.app-hero-content h2 {
+    margin: 10px 0 6px 0;
+    font-size: 28px;
+}
+
+.app-hero-content p {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.app-hero--compact {
+    height: min(48vh, 50vw);
+    min-height: 280px;
+}
+
+.app-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #eef1f6;
+    border-radius: var(--app-radius);
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    box-shadow: var(--app-shadow);
+    transition: transform var(--app-transition), box-shadow var(--app-transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--app-shadow-hover);
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(74, 144, 226, 0.12);
+    color: var(--app-primary-dark);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+}
+
+.stat-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--app-muted);
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
+.app-section {
+    padding: 60px 0;
+    display: grid;
+    gap: 20px;
+}
+
+.app-split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.section-head h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.section-head p {
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 13px;
+}
+
+.card-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card-media {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    height: auto;
+}
+
+.card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--app-transition);
+}
+
+.spot-card,
+.hotel-card {
+    background: #ffffff;
+    border: 1px solid #eef1f6;
+    border-radius: var(--app-radius);
+    padding: 16px;
+    box-shadow: var(--app-shadow);
+    display: grid;
+    gap: 12px;
+    transition: transform var(--app-transition), box-shadow var(--app-transition);
+}
+
+.spot-card:hover,
+.hotel-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--app-shadow-hover);
+}
+
+.spot-card:hover img,
+.hotel-card:hover img {
+    transform: scale(1.05);
+}
+
+.card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--app-muted);
+}
+
+.card-rating {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.card-desc {
+    margin: 0;
+    font-size: 13px;
+    color: var(--app-muted);
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price-tag {
+    font-weight: 600;
+}
+
+.budget-breakdown {
+    display: grid;
+    gap: 10px;
+}
+
+.budget-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.budget-bar {
+    height: 8px;
+    background: #eef1f6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.budget-bar span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #4A90E2, #6fb1ff);
+    width: 0;
+    transition: width var(--app-transition);
+}
+
+.budget-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.suggestion-card {
+    display: grid;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--app-muted);
+}
+
+.suggestion-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: grid;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: var(--app-shadow);
+    color: var(--app-text);
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity var(--app-transition), transform var(--app-transition);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    border-left: 4px solid #22c55e;
+}
+
+.toast-error {
+    border-left: 4px solid #ef4444;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 26px;
+    display: grid;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e2e8f0;
+}
+
+.timeline-item {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #eef1f6;
+    border-radius: var(--app-radius);
+    padding: 14px 16px 14px 18px;
+    box-shadow: var(--app-shadow);
+    display: grid;
+    gap: 6px;
+}
+
+.timeline-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.timeline-meta {
+    font-size: 12px;
+    color: var(--app-muted);
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid var(--app-primary);
+}
+
+.time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(74, 144, 226, 0.12);
+    color: var(--app-primary-dark);
+    font-size: 12px;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#destinationHero {
+    margin-top: 16px;
+}
+
+@media (max-width: 960px) {
+    .app-shell {
+        flex-direction: column;
+    }
+
+    .app-sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .app-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .app-main {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-sidebar {
+        padding: 18px;
+    }
+
+    .app-title {
+        font-size: 22px;
+    }
+
+    .app-section {
+        padding: 36px 0;
+    }
+}
+
+/* ==================== BOOKING MODAL ==================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    background: var(--app-card);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow-hover);
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    color: var(--app-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10;
+}
+
+.modal-close:hover {
+    color: var(--app-text);
+}
+
+.modal-header {
+    padding: 28px 28px 0;
+}
+
+.modal-header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    color: var(--app-text);
+}
+
+.modal-header p {
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 14px;
+}
+
+.modal-body {
+    padding: 28px;
+}
+
+.booking-summary {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--app-border);
+}
+
+.booking-hotel-info {
+    display: flex;
+    gap: 16px;
+}
+
+.booking-hotel-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.booking-hotel-info h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: var(--app-text);
+}
+
+.booking-hotel-info p {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--app-muted);
+}
+
+.booking-rating {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.booking-price-per-night {
+    color: var(--app-primary);
+    font-weight: 600;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--app-text);
+}
+
+.form-group input {
+    padding: 12px 14px;
+    border: 1px solid var(--app-border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--app-text);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.form-group small {
+    font-size: 12px;
+    color: var(--app-muted);
+}
+
+.booking-breakdown {
+    background: var(--app-bg);
+    padding: 16px;
+    border-radius: 12px;
+    margin: 8px 0;
+}
+
+.breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 14px;
+    color: var(--app-text);
+}
+
+.breakdown-row:not(:last-child) {
+    border-bottom: 1px solid var(--app-border);
+}
+
+.breakdown-row--total {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--app-primary);
+    padding-top: 12px;
+}
+
+.booking-error {
+    padding: 12px 14px;
+    background: #fee;
+    border: 1px solid #fcc;
+    border-radius: 8px;
+    color: #c33;
+    font-size: 13px;
+    display: none;
+}
+
+.booking-error.show {
+    display: block;
+}
+
+.app-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--app-transition);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.app-button--primary {
+    background: var(--app-primary);
+    color: white;
+    width: 100%;
+}
+
+.app-button--primary:hover:not(:disabled) {
+    background: var(--app-primary-dark);
+}
+
+.app-button--primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.app-button--secondary {
+    background: transparent;
+    color: var(--app-muted);
+    border: 1px solid var(--app-border);
+    width: 100%;
+}
+
+.app-button--secondary:hover {
+    background: var(--app-bg);
+    color: var(--app-text);
+}
+
+.modal-close-btn {
+    width: 100% !important;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==================== TRIP CARDS ==================== */
+.trip-card {
+    background: var(--app-card);
+    border-radius: var(--app-radius);
+    border: 1px solid var(--app-border);
+    overflow: hidden;
+    transition: var(--app-transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.trip-card:hover {
+    box-shadow: var(--app-shadow-hover);
+    border-color: var(--app-primary);
+    transform: translateY(-4px);
+}
+
+.trip-card .card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--app-bg);
+}
+
+.trip-card .card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.trip-card:hover .card-media img {
+    transform: scale(1.05);
+}
+
+.status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--app-text);
+}
+
+.status-badge.status-upcoming {
+    background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+    color: white;
+}
+
+.status-badge.status-completed {
+    background: linear-gradient(135deg, #BBB 0%, #888 100%);
+    color: white;
+}
+
+.trip-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    flex: 1;
+}
+
+.trip-card .card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--app-text);
+    display: -webkit-box;
+        -webkit-line-clamp: 1; /* Already correctly used */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.trip-hotel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.hotel-name {
+    color: var(--app-muted);
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hotel-rating {
+    color: var(--app-primary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.trip-dates {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: var(--app-bg);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.date-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.date-label {
+    color: var(--app-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.date-value {
+    color: var(--app-text);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.date-separator {
+    color: var(--app-border);
+    padding: 0 4px;
+}
+
+.trip-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.nights {
+    color: var(--app-muted);
+    padding: 4px 8px;
+    background: var(--app-bg);
+    border-radius: 4px;
+}
+
+.price-per-night {
+    color: var(--app-primary);
+    font-weight: 600;
+}
+
+.trip-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--app-border);
+    font-size: 14px;
+    color: var(--app-text);
+}
+
+.total-amount {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--app-primary);
+}
+
+.trip-actions {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.trip-actions .app-button {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+.trips-grid {
+    --grid-min: 280px;
+}

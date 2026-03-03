@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Home - Voyago</title>
+    <link rel="stylesheet" href="/dashboard/layout.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="dashboard-shell">
+        <aside class="dashboard-sidebar">
+            <div class="dashboard-brand">
+                <span>Voyago</span>
+                <span class="badge">Dashboard</span>
+            </div>
+            <nav class="dashboard-nav">
+                <a data-dashboard-nav href="/dashboard/home/">Home</a>
+                <a data-dashboard-nav href="/dashboard/explore/">Explore</a>
+                <a data-dashboard-nav href="/dashboard/my-trips/">My Trips</a>
+                <a data-dashboard-nav href="/dashboard/profile/">Profile</a>
+                <button id="dashboardLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Welcome back</h1>
+                    <p class="dashboard-subtitle">Here is an overview of your current travel plans and activity.</p>
+                </div>
+                <span class="badge">Account Active</span>
+            </header>
+
+            <section class="dashboard-grid">
+                <article class="dashboard-card">
+                    <h3>Upcoming Itinerary</h3>
+                    <p>Your current destination plan is ready. Review activities, timings, and hotels in My Trips.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Booking Status</h3>
+                    <p>All saved bookings appear here once confirmed. Track payments and upcoming check-ins.</p>
+                </article>
+                <article class="dashboard-card">
+                    <h3>Saved Destinations</h3>
+                    <p>Keep exploring. Save destinations and build a travel shortlist for later.</p>
+                </article>
+            </section>
+
+            <section class="section-stack">
+                <div class="dashboard-card">
+                    <h3>Today’s Travel Focus</h3>
+                    <p>Review your itinerary schedule and confirm hotel timing. Adjust travel windows early to avoid rush.</p>
+                </div>
+                <div class="section-row">
+                    <div class="dashboard-card">
+                        <h3>Next Steps</h3>
+                        <ul class="list-clean">
+                            <li>Confirm hotel check-in time and payment method.</li>
+                            <li>Review day-wise itinerary schedule and transport.</li>
+                            <li>Save local experiences to finalize your plan.</li>
+                        </ul>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Recent Activity</h3>
+                        <ul class="list-clean">
+                            <li>Destination shortlisted in Explore.</li>
+                            <li>Itinerary generated for your latest trip.</li>
+                            <li>Profile details verified.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/dashboard/layout.js"></script>
+</body>
+</html>

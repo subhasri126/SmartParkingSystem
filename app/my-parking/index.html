@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Parking Bookings - Voyago</title>
+    <link rel="stylesheet" href="/app/layout.css">
+    <link rel="stylesheet" href="/app/my-parking/my-parking.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-brand">
+                <span>Voyago</span>
+                <span class="badge">User App</span>
+            </div>
+            <nav class="app-nav">
+                <a data-app-nav href="/app/home/">🏠 Home</a>
+                <a data-app-nav href="/app/explore/">🧭 Explore</a>
+                <a data-app-nav href="/app/parking/">🅿️ Smart Parking</a>
+                <a data-app-nav href="/app/my-trips/">🧳 My Trips</a>
+                <a data-app-nav href="/app/my-parking/">🚗 My Parking</a>
+                <a data-app-nav href="/app/reviews/">⭐ Reviews</a>
+                <a data-app-nav href="/app/profile/">👤 Profile</a>
+                <button id="appLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            <header class="app-header">
+                <div>
+                    <h1 class="app-title">My Parking Bookings</h1>
+                    <p class="app-subtitle">View and manage your parking reservations</p>
+                </div>
+                <a href="/app/parking/" class="btn btn-primary">+ Book Parking</a>
+            </header>
+
+            <!-- Stats Section -->
+            <section class="parking-stats-section reveal">
+                <div class="stat-card">
+                    <div class="stat-icon">🅿️</div>
+                    <div>
+                        <div class="stat-label">Total Bookings</div>
+                        <div class="stat-value" id="statTotalBookings">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🟢</div>
+                    <div>
+                        <div class="stat-label">Active</div>
+                        <div class="stat-value" id="statActiveBookings">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Completed</div>
+                        <div class="stat-value" id="statCompletedBookings">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div>
+                        <div class="stat-label">Total Spent</div>
+                        <div class="stat-value" id="statTotalSpent">₹0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filters -->
+            <section class="filter-section">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All Bookings</button>
+                    <button class="filter-tab" data-filter="active">Active</button>
+                    <button class="filter-tab" data-filter="completed">Completed</button>
+                    <button class="filter-tab" data-filter="cancelled">Cancelled</button>
+                </div>
+            </section>
+
+            <!-- Bookings List -->
+            <section class="bookings-section">
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading your bookings...</p>
+                </div>
+
+                <div id="noBookings" class="no-bookings" style="display: none;">
+                    <div class="no-bookings-icon">🚗</div>
+                    <h4>No bookings yet</h4>
+                    <p>Start by searching for parking near your destination</p>
+                    <a href="/app/parking/" class="btn btn-primary">Find Parking</a>
+                </div>
+
+                <div id="bookingsList" class="bookings-list"></div>
+            </section>
+
+            <!-- Booking Detail Modal -->
+            <div id="bookingModal" class="modal" style="display: none;">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <button class="modal-close" id="closeModal">&times;</button>
+                    
+                    <div class="modal-header">
+                        <span class="booking-status-badge" id="modalStatus">Active</span>
+                        <h2 id="modalBookingId">Booking ID</h2>
+                    </div>
+
+                    <div class="booking-detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value" id="modalLocation">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">City</span>
+                            <span class="detail-value" id="modalCity">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Slot Number</span>
+                            <span class="detail-value" id="modalSlot">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Amount Paid</span>
+                            <span class="detail-value" id="modalAmount">-</span>
+                        </div>
+                        <div class="detail-item full-width">
+                            <span class="detail-label">Booking Time</span>
+                            <span class="detail-value" id="modalTime">-</span>
+                        </div>
+                    </div>
+
+                    <div class="qr-section" id="qrSection">
+                        <h4>Parking Entry QR Code</h4>
+                        <img id="modalQRCode" class="qr-code-img" alt="Booking QR Code">
+                        <p class="qr-help">Show this QR code at the parking entrance</p>
+                    </div>
+
+                    <div class="modal-actions" id="modalActions">
+                        <button id="cancelBookingBtn" class="btn btn-danger">Cancel Booking</button>
+                        <button id="completeBookingBtn" class="btn btn-success">Mark as Completed</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/app/layout.js"></script>
+    <script src="/app/my-parking/my-parking.js"></script>
+</body>
+</html>

@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 require('dotenv').config();
 
 const { testConnection, closePool } = require('./config/database');
@@ -16,6 +17,9 @@ const destinationRoutes = require('./routes/destinationRoutes');
 const hotelRoutes = require('./routes/hotelRoutes');
 const touristSpotsRoutes = require('./routes/touristSpotsRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const parkingRoutes = require('./routes/parkingRoutes');
+const smartParkingRoutes = require('./routes/smartParkingRoutes');
+const { verifyQRToken } = require('./controllers/smartParkingController');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 // Initialize Express app
@@ -26,19 +30,64 @@ const app = express();
 // =====================================================
 
 // Security headers
-app.use(helmet());
+// Security headers with customized CSP
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "https:"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            connectSrc: [
+                "'self'",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+                "http://localhost:3001",
+                "http://127.0.0.1:3001"
+            ]
+        }
+    }
+}));
 
 // CORS configuration - Allow frontend origin and local file previews
 const allowedOrigins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5500"
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5501",
+    "http://127.0.0.1:5501"
 ];
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow requests with no origin (mobile apps, curl, Postman, file://)
+        if (!origin) {
             callback(null, true);
             return;
         }
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+        }
+
+        // Allow any localhost/127.0.0.1 origin regardless of port
+        try {
+            const { hostname } = new URL(origin);
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                callback(null, true);
+                return;
+            }
+        } catch (error) {
+            // Ignore URL parse errors and fall through to block
+        }
+
+        // Log blocked origin for debugging
+        console.warn(`CORS blocked origin: ${origin}`);
         callback(new Error("Not allowed by CORS"));
     },
     credentials: true
@@ -47,6 +96,9 @@ app.use(cors({
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the root directory (Frontend)
+app.use(express.static(path.join(__dirname, '../')));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -95,17 +147,31 @@ app.get('/api/test', (req, res) => {
 app.get('/api', (req, res) => {
     res.status(200).json({
         success: true,
-        message: 'Voyago Authentication API',
-        version: '1.0.0',
+        message: 'Voyago Smart Travel API',
+        version: '2.0.0',
         endpoints: {
-            register: 'POST /api/auth/register',
-            verifyOTP: 'POST /api/auth/verify-otp',
-            login: 'POST /api/auth/login',
-            resendOTP: 'POST /api/auth/resend-otp',
-            getProfile: 'GET /api/auth/me (Protected)',
-            destinations: 'GET /api/destinations',
-            featuredDestinations: 'GET /api/destinations/featured',
-            searchDestinations: 'GET /api/destinations/search'
+            auth: {
+                register: 'POST /api/auth/register',
+                verifyOTP: 'POST /api/auth/verify-otp',
+                login: 'POST /api/auth/login',
+                resendOTP: 'POST /api/auth/resend-otp',
+                getProfile: 'GET /api/auth/me (Protected)'
+            },
+            destinations: {
+                getAll: 'GET /api/destinations',
+                featured: 'GET /api/destinations/featured',
+                search: 'GET /api/destinations/search',
+                getById: 'GET /api/destinations/:id'
+            },
+            parking: {
+                summary: 'GET /api/parking/summary',
+                getAll: 'GET /api/parking',
+                getById: 'GET /api/parking/:id',
+                reserve: 'POST /api/parking/reserve/:id',
+                update: 'POST /api/parking/update/:id',
+                analytics: 'GET /api/parking/analytics',
+                availableCount: 'GET /api/parking/available-count'
+            }
         }
     });
 });
@@ -130,6 +196,33 @@ app.use('/api/spots', touristSpotsRoutes);
 
 // Dashboard routes
 app.use('/api/dashboard', dashboardRoutes);
+console.log('✅ Dashboard routes enabled at /api/dashboard');
+
+// Parking routes (legacy)
+app.use('/api/parking', parkingRoutes);
+console.log('✅ Parking routes enabled at /api/parking');
+
+// Smart Parking routes (enhanced with locations & bookings)
+app.use('/api/smart-parking', smartParkingRoutes);
+console.log('✅ Smart Parking routes enabled at /api/smart-parking');
+
+// QR verification alias route for scanner integration
+// Required flow endpoint: GET /api/verify/:qr_token
+app.get('/api/verify/:qr_token', verifyQRToken);
+console.log('✅ QR verification route enabled at /api/verify/:qr_token');
+
+// SPA Catch-all Route: Serve index.html for any unknown route that is NOT an API route
+app.get('*', (req, res, next) => {
+    if (req.url.startsWith('/api')) {
+        return next();
+    }
+    const indexPath = path.join(__dirname, '../frontend/index.html');
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            next(); // Fallback to 404 if index.html is missing
+        }
+    });
+});
 
 // 404 handler
 app.use(notFound);
@@ -141,7 +234,7 @@ app.use(errorHandler);
 // SERVER INITIALIZATION
 // =====================================================
 
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
     try {
@@ -166,28 +259,52 @@ const startServer = async () => {
             console.warn('   Set EMAIL_USER and EMAIL_PASSWORD in .env to enable email');
         }
 
-        // Start server
-        const server = app.listen(PORT, () => {
-            console.log('\n' + '═'.repeat(60));
-            console.log('✈️  VOYAGO BACKEND SERVER - RUNNING');
-            console.log('═'.repeat(60));
-            console.log(`🚀 Server Mode: ${process.env.NODE_ENV || 'development'}`);
-            console.log(`🌐 Server URL: http://localhost:${PORT}`);
-            console.log(`📡 API Endpoint: http://localhost:${PORT}/api`);
-            console.log(`💾 Database: ${process.env.DB_NAME}`);
-            console.log(`🔓 CORS Enabled: http://localhost:5173`);
-            console.log('═'.repeat(60));
-            console.log('\n📋 Available Endpoints:');
-            console.log('   GET  /api/test               - Test connectivity');
-            console.log('   GET  /health                 - Health check');
-            console.log('   GET  /api/destinations       - Get all destinations');
-            console.log('   GET  /api/destinations/:id   - Get destination by ID');
-            console.log('   POST /api/auth/register      - Register new user');
-            console.log('   POST /api/auth/login         - Login user');
-            console.log('═'.repeat(60));
-            console.log('\n✅ Server is ready to accept connections!');
-            console.log('   Frontend should connect to: http://localhost:' + PORT + '\n');
+        // Start server with automatic port fallback if current port is busy
+        const basePort = Number(PORT) || 3000;
+        const maxPortAttempts = 10;
+
+        const listenOnPort = (port, attemptsLeft) => new Promise((resolve, reject) => {
+            const candidateServer = app.listen(port, () => {
+                resolve({ server: candidateServer, activePort: port });
+            });
+
+            candidateServer.once('error', (error) => {
+                if (error.code === 'EADDRINUSE' && attemptsLeft > 0) {
+                    console.warn(`⚠️  Port ${port} is already in use. Trying port ${port + 1}...`);
+                    return resolve(listenOnPort(port + 1, attemptsLeft - 1));
+                }
+                reject(error);
+            });
         });
+
+        const { server, activePort } = await listenOnPort(basePort, maxPortAttempts);
+
+        console.log('\n' + '═'.repeat(60));
+        console.log('✈️  VOYAGO BACKEND SERVER - RUNNING');
+        console.log('═'.repeat(60));
+        console.log(`🚀 Server Mode: ${process.env.NODE_ENV || 'development'}`);
+        console.log(`🌐 Server URL: http://localhost:${activePort}`);
+        console.log(`📡 API Endpoint: http://localhost:${activePort}/api`);
+        console.log(`💾 Database: ${process.env.DB_NAME}`);
+        console.log(`🔓 CORS Enabled: http://localhost:5173, http://localhost:3000`);
+        console.log('═'.repeat(60));
+        console.log('\n📋 Available Endpoints:');
+        console.log('   GET  /api/test               - Test connectivity');
+        console.log('   GET  /health                 - Health check');
+        console.log('   GET  /api/destinations       - Get all destinations');
+        console.log('   GET  /api/destinations/:id   - Get destination by ID');
+        console.log('   POST /api/auth/register      - Register new user');
+        console.log('   POST /api/auth/login         - Login user');
+        console.log('   --- Smart Parking (IoT) ---');
+        console.log('   GET  /api/parking/summary    - Parking summary');
+        console.log('   GET  /api/parking            - Get all slots');
+        console.log('   GET  /api/parking/:id        - Get slot by ID');
+        console.log('   POST /api/parking/reserve/:id- Reserve a slot');
+        console.log('   POST /api/parking/update/:id - Update slot (IoT)');
+        console.log('   GET  /api/parking/analytics  - Parking analytics');
+        console.log('═'.repeat(60));
+        console.log('\n✅ Server is ready to accept connections!');
+        console.log('   Frontend is served at: http://localhost:' + activePort + '\n');
 
         // Graceful shutdown
         process.on('SIGTERM', async () => {

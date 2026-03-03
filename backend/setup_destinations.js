@@ -52,10 +52,10 @@ async function setupDestinations() {
         console.log(`✅ Successfully inserted ${count} destinations\n`);
 
         // Show sample destinations
-        const [sampleRows] = await pool.execute('SELECT id, name, country, rating FROM destinations LIMIT 5');
+        const [sampleRows] = await pool.execute('SELECT id, name, state, rating FROM destinations LIMIT 5');
         console.log('📍 Sample destinations:');
         sampleRows.forEach(dest => {
-            console.log(`   ${dest.id}. ${dest.name}, ${dest.country} (⭐ ${dest.rating})`);
+            console.log(`   ${dest.id}. ${dest.name}, ${dest.state} (⭐ ${dest.rating})`);
         });
 
         console.log('\n✅ Destinations setup completed successfully! 🎉');

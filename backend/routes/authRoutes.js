@@ -12,6 +12,7 @@ const {
     resendOTP,
     getMe
 } = require('../controllers/authController');
+const { simpleLogin } = require('../controllers/simpleAuthController');
 
 const { protect } = require('../middleware/authMiddleware');
 const {
@@ -25,8 +26,11 @@ const {
 // Public Routes
 router.post('/register', registerValidation, validate, register);
 router.post('/verify-otp', otpValidation, validate, verifyOTP);
+// Full secure login route with JWT and Bcrypt validation
 router.post('/login', loginValidation, validate, login);
 router.post('/resend-otp', resendOTPValidation, validate, resendOTP);
+// Simple login route for plain text password (for dev/testing)
+router.post('/simple-login', simpleLogin);
 
 // Protected Routes (require authentication)
 router.get('/me', protect, getMe);

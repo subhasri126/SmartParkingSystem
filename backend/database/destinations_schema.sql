@@ -1,107 +1,99 @@
 -- =====================================================
 -- DESTINATIONS TABLE SCHEMA
--- Stores travel destination information
+-- Stores Indian travel destination information
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS destinations (
+-- Disable foreign key checks to allow dropping table
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Drop existing table to ensure clean schema
+DROP TABLE IF EXISTS destinations;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE destinations (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    continent VARCHAR(50) NOT NULL,
-    category ENUM('Beach', 'Mountain', 'City', 'Cultural', 'Nature', 'Island', 'Desert') NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    category ENUM('Beach', 'Hill Station', 'Heritage', 'Nature', 'City', 'Spiritual') NOT NULL,
     description TEXT NOT NULL,
-    price_starting DECIMAL(10, 2) NOT NULL,
-    rating DECIMAL(3, 2) DEFAULT 0.00 CHECK (rating >= 0 AND rating <= 5),
     image_url VARCHAR(500) NOT NULL,
+    rating DECIMAL(3, 2) DEFAULT 4.00 CHECK (rating >= 0 AND rating <= 5),
+    average_budget DECIMAL(10, 2) NOT NULL,
     is_featured BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_destination (name, country),
+    UNIQUE KEY unique_destination (name, state),
     INDEX idx_category (category),
-    INDEX idx_country (country),
-    INDEX idx_continent (continent),
+    INDEX idx_state (state),
     INDEX idx_featured (is_featured),
     INDEX idx_rating (rating)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =====================================================
--- SEED DATA - 50 POPULAR DESTINATIONS
+-- INDIAN TOURIST DESTINATIONS SEED DATA
+-- Premium destinations across India
 -- =====================================================
 
-INSERT INTO destinations (name, country, continent, category, description, price_starting, rating, image_url, is_featured) VALUES
--- Featured Asian Destinations
-('Bali', 'Indonesia', 'Asia', 'Island', 'Stunning beaches, ancient temples, and vibrant culture make Bali a tropical paradise perfect for relaxation and adventure.', 899.00, 4.8, 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80', TRUE),
-('Tokyo', 'Japan', 'Asia', 'City', 'A perfect blend of ancient tradition and cutting-edge technology, Tokyo offers incredible food, shopping, and cultural experiences.', 1299.00, 4.9, 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80', TRUE),
-('Maldives', 'Maldives', 'Asia', 'Island', 'Crystal-clear waters, overwater bungalows, and pristine beaches create the ultimate luxury tropical escape.', 2499.00, 4.9, 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80', TRUE),
+INSERT INTO destinations (name, state, category, description, image_url, rating, average_budget, is_featured) VALUES
 
--- European Destinations
-('Paris', 'France', 'Europe', 'City', 'The City of Light enchants with iconic landmarks, world-class museums, exquisite cuisine, and romantic ambiance.', 1199.00, 4.8, 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80', TRUE),
-('Santorini', 'Greece', 'Europe', 'Island', 'White-washed buildings, stunning sunsets, and azure waters make Santorini one of the most picturesque islands in the world.', 1599.00, 4.9, 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=600&q=80', TRUE),
-('Swiss Alps', 'Switzerland', 'Europe', 'Mountain', 'Majestic peaks, pristine lakes, and charming villages offer year-round outdoor adventures and breathtaking scenery.', 1899.00, 4.8, 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&q=80', TRUE),
-('Rome', 'Italy', 'Europe', 'Cultural', 'Ancient ruins, Renaissance art, and delicious cuisine immerse you in millennia of history and culture.', 1099.00, 4.7, 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600&q=80', FALSE),
-('Barcelona', 'Spain', 'Europe', 'City', 'Gaudí architecture, Mediterranean beaches, and vibrant nightlife create an unforgettable urban experience.', 999.00, 4.7, 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80', FALSE),
-('Iceland', 'Iceland', 'Europe', 'Nature', 'Glaciers, geysers, waterfalls, and the Northern Lights showcase nature at its most dramatic and beautiful.', 1799.00, 4.8, 'https://images.unsplash.com/photo-1504829857797-ddff29c27927?w=600&q=80', FALSE),
-('Amsterdam', 'Netherlands', 'Europe', 'City', 'Charming canals, world-class museums, and bicycle-friendly streets define this historic and progressive city.', 1049.00, 4.6, 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&q=80', FALSE),
+-- Tamil Nadu Destinations
+('Ooty', 'Tamil Nadu', 'Hill Station', 'Queen of Hill Stations nestled in the Nilgiri Mountains, famous for tea gardens, botanical gardens, and pleasant weather year-round.', 'https://images.unsplash.com/photo-1629011747727-1e012c71cf77?w=1200&q=80', 4.70, 3500.00, TRUE),
+('Kodaikanal', 'Tamil Nadu', 'Hill Station', 'Princess of Hill Stations known for star-shaped lake, pine forests, waterfalls, and breathtaking viewpoints at Coaker''s Walk.', 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=1200&q=80', 4.60, 4000.00, FALSE),
+('Rameswaram', 'Tamil Nadu', 'Spiritual', 'Sacred island pilgrimage destination housing the iconic Ramanathaswamy Temple with its magnificent corridor of 1000 pillars.', 'https://images.unsplash.com/photo-1621427642069-dbe095b6ea8a?w=1200&q=80', 4.50, 2500.00, FALSE),
+('Mahabalipuram', 'Tamil Nadu', 'Heritage', 'UNESCO World Heritage Site featuring ancient shore temples, rock-cut caves, and the famous Five Rathas carved from single rocks.', 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=1200&q=80', 4.60, 2000.00, FALSE),
+('Madurai', 'Tamil Nadu', 'Heritage', 'Ancient temple city home to the magnificent Meenakshi Amman Temple, known for its stunning Dravidian architecture and vibrant culture.', 'https://images.unsplash.com/photo-1577741314755-048d8525d31e?w=1200&q=80', 4.50, 2500.00, FALSE),
+('Kanyakumari', 'Tamil Nadu', 'Nature', 'Southernmost tip of India where three seas meet, offering spectacular sunrise and sunset views along with the Vivekananda Rock Memorial.', 'https://images.unsplash.com/photo-1590766940554-634f4c5e7e36?w=1200&q=80', 4.70, 3000.00, TRUE),
 
--- American Destinations
-('New York City', 'USA', 'North America', 'City', 'The city that never sleeps offers iconic landmarks, Broadway shows, diverse neighborhoods, and endless entertainment.', 1399.00, 4.7, 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80', TRUE),
-('Machu Picchu', 'Peru', 'South America', 'Cultural', 'The ancient Incan citadel set high in the Andes is one of the most iconic archaeological sites in the world.', 1699.00, 4.9, 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600&q=80', FALSE),
-('Cancún', 'Mexico', 'North America', 'Beach', 'Turquoise waters, white sand beaches, and ancient Mayan ruins make Cancún a perfect tropical getaway.', 799.00, 4.6, 'https://images.unsplash.com/photo-1568402102990-bc541580b59f?w=600&q=80', FALSE),
-('Rio de Janeiro', 'Brazil', 'South America', 'Beach', 'Copacabana Beach, Christ the Redeemer, and Carnival energy make Rio an exhilarating destination.', 1299.00, 4.7, 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&q=80', FALSE),
-('Grand Canyon', 'USA', 'North America', 'Nature', 'One of the world natural wonders, the Grand Canyon offers awe-inspiring views and outdoor adventures.', 899.00, 4.8, 'https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?w=600&q=80', FALSE),
-('Banff', 'Canada', 'North America', 'Mountain', 'Turquoise lakes, snow-capped peaks, and abundant wildlife in the heart of the Canadian Rockies.', 1499.00, 4.8, 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=600&q=80', FALSE),
+-- Kerala Destinations
+('Munnar', 'Kerala', 'Hill Station', 'Breathtaking hill station covered with endless tea plantations, misty mountains, rare Neelakurinji flowers, and exotic wildlife.', 'https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1200&q=80', 4.80, 5000.00, TRUE),
+('Alleppey', 'Kerala', 'Nature', 'Venice of the East famous for serene backwater cruises on traditional houseboats, coconut groves, and tranquil paddy fields.', 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1200&q=80', 4.70, 6000.00, TRUE),
+('Wayanad', 'Kerala', 'Nature', 'Lush green paradise in Western Ghats featuring ancient caves, majestic waterfalls, wildlife sanctuaries, and spice plantations.', 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80', 4.60, 4500.00, FALSE),
+('Thekkady', 'Kerala', 'Nature', 'Home to Periyar Wildlife Sanctuary with dense forests, exotic wildlife including elephants and tigers, and aromatic spice gardens.', 'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?w=1200&q=80', 4.50, 4000.00, FALSE),
 
--- African Destinations
-('Marrakech', 'Morocco', 'Africa', 'Cultural', 'Bustling souks, stunning palaces, and Sahara Desert adventures create an exotic Arabian Nights experience.', 999.00, 4.7, 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=600&q=80', FALSE),
-('Cape Town', 'South Africa', 'Africa', 'Beach', 'Table Mountain, stunning coastlines, wineries, and diverse wildlife make Cape Town endlessly fascinating.', 1399.00, 4.7, 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600&q=80', FALSE),
-('Serengeti', 'Tanzania', 'Africa', 'Nature', 'Witness the Great Migration and incredible wildlife in one of Africa most famous safari destinations.', 2299.00, 4.9, 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80', TRUE),
-('Zanzibar', 'Tanzania', 'Africa', 'Island', 'Pristine beaches, turquoise waters, and rich Swahili culture create an idyllic island paradise.', 1199.00, 4.7, 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=600&q=80', FALSE),
+-- Karnataka Destinations
+('Coorg', 'Karnataka', 'Hill Station', 'Scotland of India blessed with misty hills, sprawling coffee plantations, thundering waterfalls, and rich Kodava heritage.', 'https://images.unsplash.com/photo-1571018057119-0e64f34115c5?w=1200&q=80', 4.70, 5500.00, TRUE),
+('Hampi', 'Karnataka', 'Heritage', 'UNESCO World Heritage Site with magnificent ruins of Vijayanagara Empire, boulder-strewn landscapes, and ancient temple complexes.', 'https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?w=1200&q=80', 4.80, 2500.00, TRUE),
+('Mysore', 'Karnataka', 'Heritage', 'City of Palaces showcasing the illuminated Mysore Palace, Chamundi Hills, traditional silk weaving, and famous Dasara celebrations.', 'https://images.unsplash.com/photo-1600112356813-44e81bc26d53?w=1200&q=80', 4.60, 3500.00, FALSE),
+('Gokarna', 'Karnataka', 'Beach', 'Pristine beach town with secluded Om Beach, ancient Mahabaleshwar Temple, and laid-back hippie vibes perfect for beach lovers.', 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80', 4.50, 3000.00, FALSE),
 
--- Oceania Destinations
-('Sydney', 'Australia', 'Oceania', 'City', 'The iconic Opera House, beautiful harbor, stunning beaches, and vibrant culture define Australia premier city.', 1699.00, 4.8, 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&q=80', FALSE),
-('Queenstown', 'New Zealand', 'Oceania', 'Mountain', 'Adventure capital of the world with stunning landscapes, skiing, bungee jumping, and outdoor activities.', 1599.00, 4.8, 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80', FALSE),
-('Bora Bora', 'French Polynesia', 'Oceania', 'Island', 'Overwater bungalows, crystal-clear lagoons, and Mount Otemanu create the ultimate romantic escape.', 3499.00, 4.9, 'https://images.unsplash.com/photo-1589197331516-2e3769339d14?w=600&q=80', TRUE),
-('Great Barrier Reef', 'Australia', 'Oceania', 'Nature', 'The world largest coral reef system offers incredible snorkeling, diving, and marine life encounters.', 1899.00, 4.9, 'https://images.unsplash.com/photo-1582623930095-920c2a7c7b63?w=600&q=80', FALSE),
+-- Goa Destinations
+('North Goa', 'Goa', 'Beach', 'Vibrant beach paradise featuring Baga, Calangute, and Anjuna beaches, exciting nightlife, water sports, and Portuguese heritage.', 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1200&q=80', 4.70, 7000.00, TRUE),
+('South Goa', 'Goa', 'Beach', 'Serene coastal haven with pristine Palolem and Colva beaches, luxury resorts, quiet villages, and authentic Goan cuisine.', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80', 4.60, 8000.00, FALSE),
 
--- More Asian Destinations
-('Dubai', 'UAE', 'Asia', 'City', 'Ultra-modern skyscrapers, luxury shopping, desert safaris, and world-class entertainment define this futuristic city.', 1499.00, 4.7, 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80', FALSE),
-('Thailand', 'Thailand', 'Asia', 'Beach', 'Tropical beaches, ancient temples, delicious cuisine, and warm hospitality make Thailand a favorite destination.', 799.00, 4.7, 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&q=80', FALSE),
-('Kyoto', 'Japan', 'Asia', 'Cultural', 'Ancient temples, traditional geisha districts, bamboo forests, and cherry blossoms preserve Japanese heritage.', 1199.00, 4.8, 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80', FALSE),
-('Mount Everest Base Camp', 'Nepal', 'Asia', 'Mountain', 'Trek through the Himalayas to the base of the world highest peak for an unforgettable adventure.', 1999.00, 4.9, 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80', FALSE),
-('Angkor Wat', 'Cambodia', 'Asia', 'Cultural', 'The magnificent temple complex is the largest religious monument in the world and a UNESCO World Heritage site.', 899.00, 4.8, 'https://images.unsplash.com/photo-1563979520-1b97f7c3fea1?w=600&q=80', FALSE),
-('Singapore', 'Singapore', 'Asia', 'City', 'A modern city-state with futuristic architecture, incredible food scene, and diverse cultural attractions.', 1299.00, 4.7, 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80', FALSE),
+-- Rajasthan Destinations
+('Jaipur', 'Rajasthan', 'Heritage', 'The Pink City adorned with magnificent Amber Fort, Hawa Mahal, City Palace, and colorful bazaars selling traditional crafts.', 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1200&q=80', 4.70, 4500.00, TRUE),
+('Udaipur', 'Rajasthan', 'Heritage', 'City of Lakes featuring romantic Lake Palace, majestic City Palace, stunning sunset views, and royal Rajasthani hospitality.', 'https://images.unsplash.com/photo-1568495248636-6432b97bd949?w=1200&q=80', 4.80, 5000.00, TRUE),
+('Jaisalmer', 'Rajasthan', 'Heritage', 'Golden City rising from Thar Desert with magnificent sandstone fort, ornate havelis, and magical desert safari experiences.', 'https://images.unsplash.com/photo-1587135941948-670b381f08ce?w=1200&q=80', 4.70, 4000.00, FALSE),
+('Mount Abu', 'Rajasthan', 'Hill Station', 'Only hill station of Rajasthan featuring cool climate, sacred Dilwara Temples, serene Nakki Lake, and stunning sunset points.', 'https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200&q=80', 4.40, 3500.00, FALSE),
 
--- More European Destinations
-('Venice', 'Italy', 'Europe', 'City', 'Romantic canals, historic architecture, and artistic treasures create a uniquely enchanting atmosphere.', 1199.00, 4.7, 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80', FALSE),
-('Prague', 'Czech Republic', 'Europe', 'City', 'Medieval architecture, castle views, and affordable charm make Prague a European gem.', 899.00, 4.7, 'https://images.unsplash.com/photo-1541849546-216549ae216d?w=600&q=80', FALSE),
-('Norwegian Fjords', 'Norway', 'Europe', 'Nature', 'Dramatic fjords, cascading waterfalls, and charming villages showcase Scandinavia natural beauty.', 1799.00, 4.8, 'https://images.unsplash.com/photo-1519981593452-666cf05569a9?w=600&q=80', FALSE),
-('Edinburgh', 'Scotland', 'Europe', 'Cultural', 'Historic castle, cobbled streets, literary heritage, and stunning views define Scotland capital.', 1099.00, 4.6, 'https://images.unsplash.com/photo-1555604171-d6ab3d9fd05f?w=600&q=80', FALSE),
-('Croatian Coast', 'Croatia', 'Europe', 'Beach', 'Crystal-clear Adriatic waters, medieval towns, and beautiful islands create a Mediterranean paradise.', 1199.00, 4.7, 'https://images.unsplash.com/photo-1555990277-b146190209ab?w=600&q=80', FALSE),
+-- Himachal Pradesh Destinations
+('Manali', 'Himachal Pradesh', 'Hill Station', 'Adventure capital of Himachal with snow-capped peaks, Solang Valley adventures, ancient temples, and scenic Rohtang Pass.', 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&q=80', 4.70, 5500.00, TRUE),
+('Shimla', 'Himachal Pradesh', 'Hill Station', 'Queen of Hills with colonial charm, Mall Road shopping, toy train rides, and panoramic Himalayan views from Ridge.', 'https://images.unsplash.com/photo-1597074866923-dc0589150358?w=1200&q=80', 4.60, 5000.00, FALSE),
+('Dharamshala', 'Himachal Pradesh', 'Spiritual', 'Home of Dalai Lama and Tibetan government-in-exile, featuring Buddhist monasteries, cricket stadium, and trekking trails.', 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=1200&q=80', 4.50, 4000.00, FALSE),
 
--- Desert Destinations
-('Sahara Desert', 'Morocco', 'Africa', 'Desert', 'Experience golden dunes, camel treks, and star-filled nights in the world largest hot desert.', 1299.00, 4.7, 'https://images.unsplash.com/photo-1509027572446-af8401acfdc3?w=600&q=80', FALSE),
-('Dubai Desert', 'UAE', 'Asia', 'Desert', 'Luxury desert camps, dune bashing, and traditional Bedouin experiences near the modern city.', 999.00, 4.6, 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=600&q=80', FALSE),
-('Wadi Rum', 'Jordan', 'Asia', 'Desert', 'Dramatic red sandstone mountains and ancient petroglyphs create a Mars-like landscape.', 1099.00, 4.8, 'https://images.unsplash.com/photo-1583074299344-a4e0a6b15e70?w=600&q=80', FALSE),
+-- Uttarakhand Destinations
+('Rishikesh', 'Uttarakhand', 'Spiritual', 'Yoga Capital of the World on banks of holy Ganges, famous for adventure sports, ancient ashrams, and spiritual retreats.', 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=1200&q=80', 4.70, 3500.00, TRUE),
+('Mussoorie', 'Uttarakhand', 'Hill Station', 'Queen of Hills offering colonial-era charm, Gun Hill views, Kempty Falls, and romantic Mall Road walks amidst misty mountains.', 'https://images.unsplash.com/photo-1600011689032-8b628b8a8747?w=1200&q=80', 4.50, 4000.00, FALSE),
+('Nainital', 'Uttarakhand', 'Hill Station', 'Lake District of India centered around emerald Naini Lake, surrounded by seven hills and offering cable car rides to Snow View.', 'https://images.unsplash.com/photo-1564574685150-56e5fb3173c6?w=1200&q=80', 4.60, 4500.00, FALSE),
 
--- Additional Popular Destinations
-('London', 'UK', 'Europe', 'City', 'Royal palaces, world-class museums, iconic landmarks, and diverse culture define Britain capital.', 1299.00, 4.7, 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80', FALSE),
-('Budapest', 'Hungary', 'Europe', 'City', 'Thermal baths, stunning architecture, and the Danube River create an affordable European escape.', 799.00, 4.6, 'https://images.unsplash.com/photo-1541963058-d8fcf84793e7?w=600&q=80', FALSE),
-('Petra', 'Jordan', 'Asia', 'Cultural', 'The ancient rose-red city carved into cliffs is one of the New Seven Wonders of the World.', 1499.00, 4.9, 'https://images.unsplash.com/photo-1579606032821-4e6161c81bd3?w=600&q=80', TRUE),
-('Amalfi Coast', 'Italy', 'Europe', 'Beach', 'Dramatic cliffs, colorful villages, and Mediterranean charm create an iconic Italian experience.', 1599.00, 4.8, 'https://images.unsplash.com/photo-1534445867742-43195f401b6c?w=600&q=80', FALSE),
-('Patagonia', 'Argentina/Chile', 'South America', 'Nature', 'Glaciers, mountains, and pristine wilderness offer epic adventures at the end of the world.', 2199.00, 4.9, 'https://images.unsplash.com/photo-1616277434249-1ea1933be264?w=600&q=80', FALSE),
-('Havana', 'Cuba', 'North America', 'Cultural', 'Vintage cars, salsa music, colorful colonial architecture, and rich history create a time capsule experience.', 899.00, 4.6, 'https://images.unsplash.com/photo-1584713503693-bb386ec95cf2?w=600&q=80', FALSE),
-('Galápagos Islands', 'Ecuador', 'South America', 'Nature', 'Unique wildlife, volcanic landscapes, and pristine ecosystems inspired Darwin theory of evolution.', 2999.00, 4.9, 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=600&q=80', FALSE),
-('Vienna', 'Austria', 'Europe', 'Cultural', 'Imperial palaces, classical music heritage, and elegant coffeehouses define this sophisticated city.', 1099.00, 4.7, 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=600&q=80', FALSE),
-('Ha Long Bay', 'Vietnam', 'Asia', 'Nature', 'Emerald waters and thousands of limestone islands create a UNESCO World Heritage seascape.', 899.00, 4.8, 'https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80', FALSE),
-('Yellowstone', 'USA', 'North America', 'Nature', 'Geysers, hot springs, and abundant wildlife in America first national park.', 1099.00, 4.8, 'https://images.unsplash.com/photo-1564415315949-7a0c4c73aab4?w=600&q=80', FALSE),
-('Malta', 'Malta', 'Europe', 'Cultural', 'Ancient temples, crystal-clear waters, and Mediterranean charm in a compact island nation.', 999.00, 4.6, 'https://images.unsplash.com/photo-1574435876156-b5574450c48c?w=600&q=80', FALSE);
+-- Jammu & Kashmir Destinations
+('Srinagar', 'Jammu & Kashmir', 'Nature', 'Paradise on Earth featuring iconic Dal Lake houseboats, Mughal Gardens, traditional Shikara rides, and vibrant floating markets.', 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1200&q=80', 4.80, 8000.00, TRUE),
+('Gulmarg', 'Jammu & Kashmir', 'Nature', 'Meadow of Flowers transformed into premier ski destination with Asia''s highest gondola ride and breathtaking alpine scenery.', 'https://images.unsplash.com/photo-1580289143186-d99d4f86d449?w=1200&q=80', 4.70, 7500.00, FALSE),
+('Pahalgam', 'Jammu & Kashmir', 'Nature', 'Valley of Shepherds offering pristine Lidder River, pine forests, Betaab Valley meadows, and gateway to Amarnath pilgrimage.', 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1200&q=80', 4.60, 7000.00, FALSE),
 
--- India and Tamil Nadu Destinations
-INSERT INTO destinations (name, country, continent, category, description, price_starting, rating, image_url, is_featured) VALUES
-('Ooty', 'India', 'Asia', 'Mountain', 'Hill station in Tamil Nadu known for tea gardens and cool climate.', 800.00, 4.7, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Kodaikanal', 'India', 'Asia', 'Mountain', 'Popular hill station with lakes and scenic viewpoints in Tamil Nadu.', 900.00, 4.6, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Mahabalipuram', 'India', 'Asia', 'Cultural', 'UNESCO heritage shore temples and rock-cut architecture on the coast.', 700.00, 4.5, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Rameswaram', 'India', 'Asia', 'Cultural', 'Sacred pilgrimage island with historic temples and sea views.', 600.00, 4.6, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Kanyakumari', 'India', 'Asia', 'Beach', 'Southernmost tip of India with stunning sunrise and sunset views.', 750.00, 4.7, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Munnar', 'India', 'Asia', 'Mountain', 'Tea plantations, misty hills, and wildlife sanctuaries in Kerala.', 1200.00, 4.8, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Goa', 'India', 'Asia', 'Beach', 'Popular beach destination known for nightlife and Portuguese heritage.', 1500.00, 4.7, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE),
-('Jaipur', 'India', 'Asia', 'Cultural', 'The Pink City with palaces, forts, and vibrant bazaars.', 1100.00, 4.6, 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80', FALSE);
+-- Maharashtra Destinations
+('Mumbai', 'Maharashtra', 'City', 'Maximum City blending Gateway of India, Marine Drive sunsets, Bollywood glamour, street food delights, and diverse culture.', 'https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=1200&q=80', 4.50, 6000.00, FALSE),
+('Lonavala', 'Maharashtra', 'Hill Station', 'Popular hill retreat near Mumbai famous for misty valleys, ancient Karla Caves, Bhushi Dam, and delectable chikki sweets.', 'https://images.unsplash.com/photo-1564174942466-bfa64b891c74?w=1200&q=80', 4.40, 4000.00, FALSE),
+('Mahabaleshwar', 'Maharashtra', 'Hill Station', 'Strawberry country offering lush green valleys, majestic viewpoints, ancient temples, and fresh mountain air retreat.', 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', 4.50, 4500.00, FALSE),
+
+-- West Bengal Destinations
+('Darjeeling', 'West Bengal', 'Hill Station', 'Queen of Hills famous for world-renowned tea gardens, Tiger Hill sunrise, toy train heritage ride, and Kanchenjunga views.', 'https://images.unsplash.com/photo-1544634076-a90e67299c07?w=1200&q=80', 4.70, 5000.00, TRUE),
+('Sundarbans', 'West Bengal', 'Nature', 'UNESCO World Heritage mangrove delta home to Royal Bengal Tigers, unique ecosystem, and thrilling boat safaris through creeks.', 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1200&q=80', 4.50, 6000.00, FALSE),
+
+-- Uttar Pradesh Destinations
+('Agra', 'Uttar Pradesh', 'Heritage', 'Home to iconic Taj Mahal, magnificent Agra Fort, and Fatehpur Sikri showcasing pinnacle of Mughal architectural brilliance.', 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1200&q=80', 4.90, 4000.00, TRUE),
+('Varanasi', 'Uttar Pradesh', 'Spiritual', 'Oldest living city and spiritual heart of India, famous for sacred Ganges ghats, evening Aarti ceremony, and ancient temples.', 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1200&q=80', 4.70, 3500.00, TRUE),
+
+-- Assam Destination
+('Kaziranga', 'Assam', 'Nature', 'UNESCO World Heritage Site protecting two-thirds of world''s one-horned rhinoceros, with elephant safaris through grasslands.', 'https://images.unsplash.com/photo-1557764824-1db5a4c2e12b?w=1200&q=80', 4.60, 8000.00, FALSE);

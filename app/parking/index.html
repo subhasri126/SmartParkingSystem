@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking - Voyago</title>
+    <link rel="stylesheet" href="/app/layout.css">
+    <link rel="stylesheet" href="/app/parking/parking.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="app-brand">
+                <span>Voyago</span>
+                <span class="badge">User App</span>
+            </div>
+            <nav class="app-nav">
+                <a data-app-nav href="/app/home/">🏠 Home</a>
+                <a data-app-nav href="/app/explore/">🧭 Explore</a>
+                <a data-app-nav href="/app/parking/">🅿️ Smart Parking</a>
+                <a data-app-nav href="/app/my-trips/">🧳 My Trips</a>
+                <a data-app-nav href="/app/my-parking/">🚗 My Parking</a>
+                <a data-app-nav href="/app/reviews/">⭐ Reviews</a>
+                <a data-app-nav href="/app/profile/">👤 Profile</a>
+                <button id="appLogout">Logout</button>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            <header class="app-header">
+                <div>
+                    <h1 class="app-title">Smart Parking</h1>
+                    <p class="app-subtitle">Find and book parking near your destination</p>
+                </div>
+            </header>
+
+            <!-- Search Section -->
+            <section class="app-section parking-search-section reveal">
+                <div class="app-card">
+                    <div class="section-head">
+                        <h3>Search Parking</h3>
+                        <p>Enter a destination or select from your saved locations</p>
+                    </div>
+                    
+                    <div class="search-controls">
+                        <div class="search-row">
+                            <div class="search-field">
+                                <label for="citySearch">City Name</label>
+                                <input type="text" id="citySearch" placeholder="Enter city name (e.g., Chennai, Madurai)">
+                            </div>
+                            <div class="search-field">
+                                <label for="radiusSelect">Search Radius</label>
+                                <select id="radiusSelect">
+                                    <option value="1">Within 1 km</option>
+                                    <option value="2">Within 2 km</option>
+                                    <option value="5">Within 5 km</option>
+                                    <option value="10">Within 10 km</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="search-actions">
+                            <button id="searchByCity" class="btn btn-primary">🔍 Search by City</button>
+                            <button id="useLocation" class="btn btn-secondary">📍 Use My Location</button>
+                        </div>
+                        
+                        <div class="quick-cities">
+                            <span>Popular cities:</span>
+                            <button class="city-chip" data-city="Chennai">Chennai</button>
+                            <button class="city-chip" data-city="Coimbatore">Coimbatore</button>
+                            <button class="city-chip" data-city="Madurai">Madurai</button>
+                            <button class="city-chip" data-city="Ooty">Ooty</button>
+                            <button class="city-chip" data-city="Tiruchirappalli">Trichy</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="app-section parking-results-section">
+                <div class="results-header">
+                    <h3 id="resultsTitle">Parking Locations</h3>
+                    <span class="results-count" id="resultsCount"></span>
+                </div>
+                
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Searching parking locations...</p>
+                </div>
+
+                <div id="noResults" class="no-results" style="display: none;">
+                    <div class="no-results-icon">🅿️</div>
+                    <h4>No parking locations found</h4>
+                    <p>Try searching in a different city or expanding the search radius</p>
+                </div>
+
+                <div id="parkingResults" class="parking-grid"></div>
+            </section>
+
+            <!-- Location Details Modal -->
+            <div id="locationModal" class="modal" style="display: none;">
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <button class="modal-close" id="closeModal">&times;</button>
+                    
+                    <div class="modal-header">
+                        <h2 id="modalLocationName">Location Name</h2>
+                        <p id="modalLocationAddress" class="modal-address"></p>
+                    </div>
+
+                    <div class="modal-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Total Slots</span>
+                            <span class="stat-value" id="modalTotalSlots">0</span>
+                        </div>
+                        <div class="stat-box available">
+                            <span class="stat-label">Available</span>
+                            <span class="stat-value" id="modalAvailableSlots">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Rate/Hour</span>
+                            <span class="stat-value" id="modalPricePerHour">₹0</span>
+                        </div>
+                    </div>
+
+                    <div id="occupiedWarning" class="warning-banner" style="display: none;">
+                        <span class="warning-icon">⚠️</span>
+                        <span>Entry Denied – Fully Occupied</span>
+                    </div>
+
+                    <div class="slots-section">
+                        <h4>Select a Slot</h4>
+                        <div class="slots-legend">
+                            <span class="legend-item"><span class="slot-dot available"></span> Available</span>
+                            <span class="legend-item"><span class="slot-dot occupied"></span> Occupied</span>
+                            <span class="legend-item"><span class="slot-dot reserved"></span> Reserved</span>
+                        </div>
+                        <div id="slotsGrid" class="slots-grid"></div>
+                    </div>
+
+                    <div id="bookingForm" class="booking-form" style="display: none;">
+                        <h4>Book Slot: <span id="selectedSlotNumber"></span></h4>
+                        
+                        <div class="form-group">
+                            <label for="bookingDate">Date</label>
+                            <input type="date" id="bookingDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bookingTime">Start Time</label>
+                            <input type="time" id="bookingTime">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="durationHours">Duration (Hours)</label>
+                            <select id="durationHours">
+                                <option value="1">1 Hour</option>
+                                <option value="2" selected>2 Hours</option>
+                                <option value="3">3 Hours</option>
+                                <option value="4">4 Hours</option>
+                                <option value="5">5 Hours</option>
+                                <option value="6">6 Hours</option>
+                                <option value="8">8 Hours</option>
+                                <option value="12">12 Hours</option>
+                                <option value="24">24 Hours</option>
+                            </select>
+                        </div>
+                        
+                        <div class="booking-summary">
+                            <div class="summary-row">
+                                <span>Duration:</span>
+                                <span id="summaryDuration">2 hours</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Rate:</span>
+                                <span id="summaryRate">₹0/hour</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Amount:</span>
+                                <span id="summaryTotal">₹0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="booking-actions">
+                            <button id="cancelBooking" class="btn btn-secondary">Cancel</button>
+                            <button id="confirmBooking" class="btn btn-primary">Confirm Booking</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Success Modal -->
+            <div id="successModal" class="modal" style="display: none;">
+                <div class="modal-overlay"></div>
+                <div class="modal-content success-modal">
+                    <div class="success-icon">✅</div>
+                    <h2>Booking Confirmed!</h2>
+                    
+                    <div class="booking-details">
+                        <div class="detail-row">
+                            <span>Booking ID:</span>
+                            <strong id="successBookingId"></strong>
+                        </div>
+                        <div class="detail-row">
+                            <span>QR Token:</span>
+                            <strong id="successQrToken"></strong>
+                        </div>
+                        <div class="detail-row">
+                            <span>Location:</span>
+                            <strong id="successLocation"></strong>
+                        </div>
+                        <div class="detail-row">
+                            <span>Slot:</span>
+                            <strong id="successSlot"></strong>
+                        </div>
+                        <div class="detail-row">
+                            <span>Time:</span>
+                            <strong id="successTime"></strong>
+                        </div>
+                        <div class="detail-row">
+                            <span>Amount:</span>
+                            <strong id="successAmount"></strong>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-section">
+                        <h4>Your Parking QR Code</h4>
+                        <img id="successQRCode" class="qr-code-img" alt="Booking QR Code">
+                        <p class="qr-help" id="successVerifyUrl"></p>
+                        <p class="qr-help">Show this QR code at the parking entrance</p>
+                    </div>
+                    
+                    <div class="success-actions">
+                        <button id="copyQrToken" class="btn btn-secondary">Copy QR Token</button>
+                        <button id="viewMyBookings" class="btn btn-primary">View My Bookings</button>
+                        <button id="closeSuccessModal" class="btn btn-secondary">Close</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/app/layout.js"></script>
+    <script src="/app/parking/parking.js"></script>
+</body>
+</html>
