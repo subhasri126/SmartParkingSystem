@@ -97,8 +97,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the root directory (Frontend)
-app.use(express.static(path.join(__dirname, '../')));
+// Serve static files from the public directory (Frontend)
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -216,7 +216,7 @@ app.get('*', (req, res, next) => {
     if (req.url.startsWith('/api')) {
         return next();
     }
-    const indexPath = path.join(__dirname, '../frontend/index.html');
+    const indexPath = path.join(__dirname, '../public/index.html');
     res.sendFile(indexPath, (err) => {
         if (err) {
             next(); // Fallback to 404 if index.html is missing
