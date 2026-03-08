@@ -396,7 +396,8 @@ router.get("/my-trips/:userId", verifyToken, async (req, res) => {
             return res.status(403).json({ success: false, message: "Access denied" });
         }
 
-        // Query bookings table (primary source)
+        // Query bookings table joined with parking_locations based on destination name
+        // We look for parking locations where the city matches the destination name and aggregate availability
         const [tripRows] = await pool.query(
             `SELECT 
                 b.id,
@@ -414,10 +415,17 @@ router.get("/my-trips/:userId", verifyToken, async (req, res) => {
                 h.price_per_night,
                 d.name as destination_name,
                 d.country as destination_country,
-                d.image_url as destination_image
+                d.image_url as destination_image,
+                pl.available as parking_available,
+                pl.total as parking_total
              FROM bookings b
              JOIN hotels h ON b.hotel_id = h.id
              JOIN destinations d ON b.destination_id = d.id
+             LEFT JOIN (
+                 SELECT city, SUM(available_slots) as available, SUM(total_slots) as total
+                 FROM parking_locations
+                 GROUP BY city
+             ) pl ON pl.city = d.name
              WHERE b.user_id = ?
              ORDER BY b.check_in_date DESC`,
             [userId]
@@ -440,7 +448,11 @@ router.get("/my-trips/:userId", verifyToken, async (req, res) => {
             totalPrice: Number(trip.total_price),
             pricePerNight: Number(trip.price_per_night),
             bookingDate: trip.booking_date,
-            status: trip.status
+            status: trip.status,
+            parking: trip.parking_total ? {
+                available: trip.parking_available,
+                total: trip.parking_total
+            } : null
         }));
 
         res.status(200).json({

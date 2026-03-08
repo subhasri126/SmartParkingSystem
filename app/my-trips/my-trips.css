@@ -1,0 +1,75 @@
+.trip-parking-status {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.parking-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.parking-status-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.parking-status-badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.parking-status-badge.high { background: #dcfce7; color: #166534; }
+.parking-status-badge.medium { background: #fef9c3; color: #854d0e; }
+.parking-status-badge.low { background: #fee2e2; color: #991b1b; }
+
+.parking-progress-container {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.parking-progress-bar {
+    height: 100%;
+    background: #4A90E2;
+    transition: width 1s ease-out;
+}
+
+.parking-slots-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.parking-slots-info b {
+    color: #1e293b;
+}
+
+.trip-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.trip-actions {
+    margin-top: auto;
+    padding-top: 16px;
+}

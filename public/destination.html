@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destination Details - Voyago</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="explore-styles.css">
-    <link rel="stylesheet" href="destination-styles.css">
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <link rel="stylesheet" href="/stylesheets/explore-styles.css">
+    <link rel="stylesheet" href="/stylesheets/destination-styles.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -30,9 +30,7 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="explore.html" class="nav-link">Explore</a></li>
-                <li><a href="smart-parking.html" class="nav-link">Smart Parking</a></li>
-                <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+                <li><a href="explore.html" class="nav-link">Explore</a></li>                <li><a href="analytics.html" class="nav-link">Analytics</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="auth.html" class="nav-link btn-login">Login</a></li>
                 <li><a href="auth.html" class="nav-link btn-register">Register</a></li>
@@ -108,12 +106,13 @@
                 <a href="#spotsBlock">Tourist Spots</a>
                 <a href="#itineraryBlock">Itinerary</a>
                 <a href="#transportBlock">Transport</a>
+                <a href="#parkingBlock">Parking Availability</a>
             </div>
         </div>
     </section>
 
-    <!-- Dynamic Exploration Sections (Initially Hidden) -->
-    <section class="explore-sections" id="exploreSections" style="display: none;">
+    <!-- Dynamic Exploration Sections (Always Visible) -->
+    <section class="explore-sections" id="exploreSections">
         <div class="container">
             
             <!-- Hotels Section -->
@@ -155,10 +154,29 @@
                 </div>
             </div>
 
+            <!-- Parking Availability Section -->
+            <div class="explore-block" id="parkingBlock">
+                <h2 class="section-title">🅿️ Parking Availability</h2>
+                <div class="parking-login-notice" id="parkingLoginNotice" style="display:none;">
+                    Please login to view parking slots.
+                </div>
+                <div class="parking-facilities" id="parkingFacilities"></div>
+                <div class="parking-summary" id="parkingSummary">Loading parking slots...</div>
+                <div class="parking-slots-grid" id="parkingSlotsGrid">
+                    <div class="loading-state">Loading parking slots...</div>
+                </div>
+                <div class="transport-results" id="parkingReserveMessage"></div>
+                <div class="parking-qr-card" id="parkingQrCard" style="display:none;">
+                    <h3>Your Parking QR</h3>
+                    <p id="parkingQrMeta"></p>
+                    <img id="parkingQrImage" alt="Parking booking QR code" />
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <script src="script.js"></script>
-    <script src="destination-script.js"></script>
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/destination-script.js"></script>
 </body>
 </html>

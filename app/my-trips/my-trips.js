@@ -36,6 +36,43 @@ function renderTripCard(trip) {
     const isActive = isTripsActive(trip.checkInDate, trip.checkOutDate);
     const statusBadge = isActive ? 'Upcoming' : 'Completed';
     const statusClass = isActive ? 'status-upcoming' : 'status-completed';
+
+    // Parking Status rendering
+    let parkingHtml = '';
+    if (trip.parking) {
+        const available = trip.parking.available || 0;
+        const total = trip.parking.total || 0;
+        const percent = Math.min(100, Math.max(0, (available / total) * 100));
+        let badgeClass = 'high';
+        let badgeText = 'Plenty';
+        
+        if (available === 0) {
+            badgeClass = 'low';
+            badgeText = 'Full';
+        } else if (percent < 30) {
+            badgeClass = 'low';
+            badgeText = 'Low';
+        } else if (percent < 60) {
+            badgeClass = 'medium';
+            badgeText = 'Steady';
+        }
+
+        parkingHtml = `
+            <div class="trip-parking-status">
+                <div class="parking-status-header">
+                    <span class="parking-status-label">🅿️ Smart Parking</span>
+                    <span class="parking-status-badge ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="parking-progress-container">
+                    <div class="parking-progress-bar" style="width: ${percent}%;"></div>
+                </div>
+                <div class="parking-slots-info">
+                    <span>Availability: <b>${available}</b> slots</span>
+                    <span>Total: <b>${total}</b> slots</span>
+                </div>
+            </div>
+        `;
+    }
     
     return `
         <article class="trip-card reveal">
@@ -61,6 +98,8 @@ function renderTripCard(trip) {
                         <span class="date-value">${formatDateDisplay(trip.checkOutDate)}</span>
                     </div>
                 </div>
+
+                ${parkingHtml}
 
                 <div class="trip-meta">
                     <span class="nights">${trip.nights} night${trip.nights !== 1 ? 's' : ''}</span>

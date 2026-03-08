@@ -605,6 +605,151 @@
     color: #f39c12;
 }
 
+/* Parking Availability */
+.parking-summary {
+    text-align: center;
+    margin-bottom: 16px;
+    color: #2C3E50;
+    font-weight: 600;
+}
+
+.parking-login-notice {
+    background: #fff8e1;
+    border: 1px solid #f1c86e;
+    color: #8b5e07;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.parking-facilities {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.parking-facility-card {
+    background: #ffffff;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.parking-facility-name {
+    margin: 0 0 6px;
+    color: #1a1a2e;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.parking-facility-meta {
+    margin: 0;
+    color: #425466;
+    font-size: 13px;
+}
+
+.parking-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.parking-slot-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid transparent;
+}
+
+.parking-slot-card.available {
+    border-color: rgba(46, 204, 113, 0.45);
+}
+
+.parking-slot-card.occupied {
+    border-color: rgba(231, 76, 60, 0.45);
+}
+
+.parking-slot-card.reserved {
+    border-color: rgba(243, 156, 18, 0.45);
+}
+
+.parking-slot-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.parking-slot-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.parking-slot-status {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.parking-slot-status.available {
+    color: #1e9c55;
+}
+
+.parking-slot-status.occupied {
+    color: #d6453a;
+}
+
+.parking-slot-status.reserved {
+    color: #c57f12;
+}
+
+.parking-slot-card .btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+.parking-slot-card .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.parking-qr-card {
+    margin-top: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(74, 144, 226, 0.25);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+}
+
+.parking-qr-card h3 {
+    margin: 0 0 8px;
+    color: #1a1a2e;
+}
+
+.parking-qr-card p {
+    margin: 0 0 10px;
+    color: #425466;
+}
+
+.parking-qr-card img {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    background: #ffffff;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hotels-grid,

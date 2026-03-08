@@ -22,6 +22,9 @@ const smartParkingRoutes = require('./routes/smartParkingRoutes');
 const { verifyQRToken } = require('./controllers/smartParkingController');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
+const frontendRoot = path.join(__dirname, '../public');
+const frontendIndex = path.join(frontendRoot, 'index.html');
+
 // Initialize Express app
 const app = express();
 
@@ -32,7 +35,9 @@ const app = express();
 // Security headers
 // Security headers with customized CSP
 app.use(helmet({
+    // Keep a CSP, but avoid directives that force HTTPS in local/LAN HTTP dev.
     contentSecurityPolicy: {
+        useDefaults: false,
         directives: {
             defaultSrc: ["'self'"],
             imgSrc: ["'self'", "data:", "https:"],
@@ -45,9 +50,18 @@ app.use(helmet({
                 "http://127.0.0.1:3000",
                 "http://localhost:3001",
                 "http://127.0.0.1:3001"
-            ]
+            ],
+            baseUri: ["'self'"],
+            formAction: ["'self'"],
+            frameAncestors: ["'self'"],
+            objectSrc: ["'none'"],
+            scriptSrcAttr: ["'none'"]
         }
-    }
+    },
+    // Disable these on HTTP IP access to prevent browser warnings/noise.
+    crossOriginOpenerPolicy: false,
+    originAgentCluster: false,
+    hsts: false
 }));
 
 // CORS configuration - Allow frontend origin and local file previews
@@ -75,10 +89,12 @@ app.use(cors({
             return;
         }
 
-        // Allow any localhost/127.0.0.1 origin regardless of port
+        // Allow localhost, loopback, and private-network origins regardless of port.
         try {
             const { hostname } = new URL(origin);
-            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            const isPrivateIpv4 = /^(10\.|127\.|169\.254\.|172\.(1[6-9]|2\d|3[0-1])\.|192\.168\.)/.test(hostname);
+            const isLocalHost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+            if (isLocalHost || isPrivateIpv4) {
                 callback(null, true);
                 return;
             }
@@ -97,8 +113,45 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the root directory (Frontend)
-app.use(express.static(path.join(__dirname, '../')));
+// Serve static files from the public frontend directory.
+app.use(express.static(frontendRoot));
+app.use('/stylesheets', express.static(path.join(frontendRoot, 'stylesheets')));
+app.use('/javascripts', express.static(path.join(frontendRoot, 'javascripts')));
+
+// Backward-compatible aliases used by some pages.
+app.use('/css', express.static(path.join(frontendRoot, 'stylesheets')));
+app.use('/js', express.static(path.join(frontendRoot, 'javascripts')));
+app.use('/app', express.static(path.join(__dirname, '../app')));
+app.use('/dashboard', express.static(path.join(__dirname, '../dashboard')));
+
+const frontendPageRoutes = {
+    '/': 'index.html',
+    '/index': 'index.html',
+    '/index.html': 'index.html',
+    '/home': 'index.html',
+    '/explore': 'explore.html',
+    '/explore.html': 'explore.html',
+    '/auth': 'auth.html',
+    '/auth.html': 'auth.html',
+    '/smart-parking': 'smart-parking.html',
+    '/smart-parking.html': 'smart-parking.html',
+    '/analytics': 'analytics.html',
+    '/analytics.html': 'analytics.html',
+    '/about': 'about.html',
+    '/about.html': 'about.html',
+    '/dashboard': 'dashboard.html',
+    '/dashboard.html': 'dashboard.html'
+};
+
+Object.entries(frontendPageRoutes).forEach(([routePath, fileName]) => {
+    app.get(routePath, (req, res, next) => {
+        res.sendFile(path.join(frontendRoot, fileName), (err) => {
+            if (err) {
+                next();
+            }
+        });
+    });
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -213,11 +266,24 @@ console.log('✅ QR verification route enabled at /api/verify/:qr_token');
 
 // SPA Catch-all Route: Serve index.html for any unknown route that is NOT an API route
 app.get('*', (req, res, next) => {
-    if (req.url.startsWith('/api')) {
+    const extension = path.extname(req.path).toLowerCase();
+    const staticAssetExtensions = new Set([
+        '.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico',
+        '.webp', '.woff', '.woff2', '.ttf', '.eot', '.map', '.html'
+    ]);
+    const isStaticAssetRequest =
+        req.path.startsWith('/stylesheets/') ||
+        req.path.startsWith('/javascripts/') ||
+        req.path.startsWith('/css/') ||
+        req.path.startsWith('/js/') ||
+        staticAssetExtensions.has(extension);
+
+    if (req.url.startsWith('/api') || isStaticAssetRequest) {
         return next();
     }
-    const indexPath = path.join(__dirname, '../frontend/index.html');
-    res.sendFile(indexPath, (err) => {
+    
+    console.log(`🏠 [SPA Fallback] Redirecting ${req.url} to index.html`);
+    res.sendFile(frontendIndex, (err) => {
         if (err) {
             next(); // Fallback to 404 if index.html is missing
         }

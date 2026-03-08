@@ -3,8 +3,14 @@
 // Filtering, animations, and interactions with backend
 // =====================================================
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:3000/api';
+// API Configuration: prefer current origin so LAN IP access works.
+const API_BASE_URL = (() => {
+    const origin = window.location.origin;
+    if (origin && origin.startsWith('http')) {
+        return `${origin}/api`;
+    }
+    return 'http://localhost:3000/api';
+})();
 
 // State management (Simulating useState)
 let destinations = [];
@@ -60,8 +66,8 @@ const fetchDestinations = async (params = {}) => {
     try {
         const queryParams = new URLSearchParams(params);
         const url = queryParams.toString()
-            ? `http://localhost:3000/api/destinations?${queryParams.toString()}`
-            : "http://localhost:3000/api/destinations";
+            ? `${API_BASE_URL}/destinations?${queryParams.toString()}`
+            : `${API_BASE_URL}/destinations`;
 
         console.log('Fetching destinations from:', url);
 
