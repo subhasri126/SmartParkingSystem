@@ -113,45 +113,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from the public frontend directory.
-app.use(express.static(frontendRoot));
-app.use('/stylesheets', express.static(path.join(frontendRoot, 'stylesheets')));
-app.use('/javascripts', express.static(path.join(frontendRoot, 'javascripts')));
-
-// Backward-compatible aliases used by some pages.
-app.use('/css', express.static(path.join(frontendRoot, 'stylesheets')));
-app.use('/js', express.static(path.join(frontendRoot, 'javascripts')));
-app.use('/app', express.static(path.join(__dirname, '../app')));
-app.use('/dashboard', express.static(path.join(__dirname, '../dashboard')));
-
-const frontendPageRoutes = {
-    '/': 'index.html',
-    '/index': 'index.html',
-    '/index.html': 'index.html',
-    '/home': 'index.html',
-    '/explore': 'explore.html',
-    '/explore.html': 'explore.html',
-    '/auth': 'auth.html',
-    '/auth.html': 'auth.html',
-    '/smart-parking': 'smart-parking.html',
-    '/smart-parking.html': 'smart-parking.html',
-    '/analytics': 'analytics.html',
-    '/analytics.html': 'analytics.html',
-    '/about': 'about.html',
-    '/about.html': 'about.html',
-    '/dashboard': 'dashboard.html',
-    '/dashboard.html': 'dashboard.html'
-};
-
-Object.entries(frontendPageRoutes).forEach(([routePath, fileName]) => {
-    app.get(routePath, (req, res, next) => {
-        res.sendFile(path.join(frontendRoot, fileName), (err) => {
-            if (err) {
-                next();
-            }
-        });
-    });
-});
+// Serve static files from the root directory (Frontend)
+app.use(express.static(path.join(__dirname, '../')));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -281,9 +244,8 @@ app.get('*', (req, res, next) => {
     if (req.url.startsWith('/api') || isStaticAssetRequest) {
         return next();
     }
-    
-    console.log(`🏠 [SPA Fallback] Redirecting ${req.url} to index.html`);
-    res.sendFile(frontendIndex, (err) => {
+    const indexPath = path.join(__dirname, '../frontend/index.html');
+    res.sendFile(indexPath, (err) => {
         if (err) {
             next(); // Fallback to 404 if index.html is missing
         }

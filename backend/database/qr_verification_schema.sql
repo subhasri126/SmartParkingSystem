@@ -3,14 +3,27 @@
 -- Extended parking_bookings table with QR token support
 -- =====================================================
 
--- Add qr_token column to parking_bookings table if not exists
-ALTER TABLE parking_bookings 
-ADD COLUMN IF NOT EXISTS qr_token VARCHAR(36) UNIQUE AFTER qr_code_url,
-ADD COLUMN IF NOT EXISTS qr_verified BOOLEAN DEFAULT FALSE AFTER qr_token,
-ADD COLUMN IF NOT EXISTS qr_verified_at DATETIME NULL AFTER qr_verified,
-ADD COLUMN IF NOT EXISTS entry_time DATETIME NULL AFTER qr_verified_at,
-ADD COLUMN IF NOT EXISTS exit_time DATETIME NULL AFTER entry_time,
-ADD INDEX idx_qr_token (qr_token);
+-- Create parking_bookings table if it doesn't exist
+CREATE TABLE IF NOT EXISTS parking_bookings (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    location_id INT,
+    slot_number INT,
+    booking_id VARCHAR(50),
+    booking_start_time DATETIME,
+    booking_end_time DATETIME,
+    qr_code_url VARCHAR(500),
+    qr_token VARCHAR(36) UNIQUE,
+    qr_verified BOOLEAN DEFAULT FALSE,
+    qr_verified_at DATETIME NULL,
+    entry_time DATETIME NULL,
+    exit_time DATETIME NULL,
+    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_user_id (user_id),
+    INDEX idx_location_id (location_id),
+    INDEX idx_qr_token (qr_token)
+);
 
 -- Create parking_access_logs table for gate entry/exit logging
 CREATE TABLE IF NOT EXISTS parking_access_logs (
@@ -36,11 +49,6 @@ SELECT
     pb.booking_start_time,
     pb.booking_end_time,
     pb.qr_verified,
-    pb.status,
-    pl.name as location_name,
-    pl.city,
-    u.name as user_name
+    pb.status
 FROM parking_bookings pb
-JOIN parking_locations pl ON pb.location_id = pl.id
-JOIN users u ON pb.user_id = u.id
 WHERE pb.status = 'active';
